@@ -36,5 +36,8 @@ public:
 private:
 	CScene2D *pBack[MAX_UI];					// UI
 	int m_nCarType;								// 車の種類
+	float m_fMove;								// 背景のスクロール
+	float m_fAlpha;								// 透明度
+	bool m_bAlpha;								// 透明度フラグ
 };
 #endif
