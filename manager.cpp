@@ -411,20 +411,17 @@ void CManager::SetMode(MODE mode)
 		m_pTitle = new CTitle;
 		m_pTitle->Init();
 		m_pSound->PlaySoundA(SOUND_LABEL_BGM_TiTle);
-		m_pSound->SetVolume(SOUND_LABEL_BGM_TiTle, 0.1f);
 
 		break;
 	case MODE_GAME:
 		m_pGame = new CGame;
 		m_pGame->Init();
 		m_pSound->PlaySoundA(SOUND_LABEL_BGM_Race);
-		m_pSound->SetVolume(SOUND_LABEL_BGM_Race, 0.1f);
 		break;
 	case MODE_RESULT:
 		m_pResult = new CResult;
 		m_pResult->Init();
 		m_pSound->PlaySoundA(SOUND_LABEL_BGM_Result);
-		m_pSound->SetVolume(SOUND_LABEL_BGM_Result, 0.1f);
 
 		break;
 	case MODE_RANKING:
