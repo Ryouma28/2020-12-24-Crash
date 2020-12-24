@@ -416,7 +416,7 @@ void CManager::SetMode(MODE mode)
 	case MODE_GAME:
 		m_pGame = new CGame;
 		m_pGame->Init();
-		m_pSound->PlaySoundA(SOUND_LABEL_BGM_Race);
+		m_pSound->PlaySoundA(SOUND_LABEL_BGM_Game);
 		break;
 	case MODE_RESULT:
 		m_pResult = new CResult;
