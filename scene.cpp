@@ -187,7 +187,6 @@ void CScene::DrawAll(void)
 {
 	CScene *pSceneNext = NULL;																	// Ÿ‰ñ•`‰æ‘ÎÛ
 	CScene *pSceneNow = NULL;
-	CObject *pObj;
 
 	for (int nCount = 0; nCount < PRIORITY_MAX; nCount++)
 	{
@@ -201,22 +200,20 @@ void CScene::DrawAll(void)
 
 			if (pSceneNow->GetActive())
 			{
-				if (pSceneNow->GetObjType() != PRIORITY_MODEL)
+				if (pSceneNow->GetObjType() == PRIORITY_BG || pSceneNow->GetObjType() == PRIORITY_SKY || pSceneNow->GetObjType() == PRIORITY_ORBIT ||
+					pSceneNow->GetObjType() == PRIORITY_UI || pSceneNow->GetObjType() == PRIORITY_EFFECT)
 				{// ƒ‚ƒfƒ‹‚¶‚á‚È‚©‚Á‚½‚Æ‚«
 					pSceneNow->Draw();																	//•`‰æ
 				}
-				else
+#ifdef _DEBUG
+				else if (CDebugProc::GetDebugState())
 				{
-					pObj = (CObject*)pSceneNow;
-
-					if (pObj->GetAdd() == "data/model/MouMouCountry.x")
-					{
-						pSceneNow->Draw();																	//•`‰æ
-					}
-					else if (pCamera->VFCulling(pSceneNow->GetPosition(), nCount, D3DXToRadian(45.0f), 1.0f, 2500.0f))
-					{
-						pSceneNow->Draw();																	//•`‰æ
-					}
+					pSceneNow->Draw();																	//•`‰æ
+				}
+#endif
+				else if(pCamera->VFCulling(pSceneNow->GetPosition(), nCount, D3DXToRadian(45.0f), 1.0f, 2500.0f))
+				{
+					pSceneNow->Draw();																	//•`‰æ
 				}
 			}
 			pSceneNow = pSceneNext;																//Ÿ‰ñ•`‰æ‘ÎÛ‚ğŠi”[

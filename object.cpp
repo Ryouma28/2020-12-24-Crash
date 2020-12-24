@@ -78,6 +78,26 @@ HRESULT CObject::Init(void)
 			}
 		}
 	}
+
+	// ポイントオブジェクトのとき
+	if (m_Add == "data/model/wood3.x")
+	{
+		// スフィアがNULLのとき
+		if (m_pBox == NULL)
+		{
+			// スフィアの生成処理
+			m_pBox = CColliderBox::Create(true, D3DXVECTOR3(100.0f, 300.0f, 100.0f));
+
+			// スフィアがあるとき
+			if (m_pBox != NULL)
+			{
+				m_pBox->SetScene(this);
+				m_pBox->SetTag("wood");
+				m_pBox->SetPosition(pos);
+				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 150.0f, 0.0f));
+			}
+		}
+	}
 	SetPosition(pos);			// 位置の設定
 	return S_OK;
 }
