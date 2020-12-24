@@ -1,0 +1,83 @@
+#==============================================================================
+#
+# UIデータスクリプト
+# Author : masayasu wakita
+#
+#==============================================================================
+SCRIPT
+
+#==============================================================================
+# UIの情報
+
+#==============================================================================
+UISET
+	TEXTURE_FILENAME = data/tex/コア.jpg
+	POS = 485.00 293.00 0.00
+	ROT = 0.00 0.00 0.00
+	SIZE = 872.00 466.00 0.00
+END_UISET
+
+UISET
+	TEXTURE_FILENAME = data/tex/パーツ置き場.jpg
+	POS = 1097.00 401.00 0.00
+	ROT = 0.00 0.00 0.00
+	SIZE = 344.00 257.00 0.00
+END_UISET
+
+UISET
+	TEXTURE_FILENAME = data/tex/パーツ説明.jpg
+	POS = 1096.00 146.00 0.00
+	ROT = 0.00 0.00 0.00
+	SIZE = 330.00 250.00 0.00
+END_UISET
+
+UISET
+	TEXTURE_FILENAME = data/tex/パーツ置き場.jpg
+	POS = 641.00 626.00 0.00
+	ROT = 0.00 0.00 0.00
+	SIZE = 1259.00 188.00 0.00
+END_UISET
+
+UISET
+	TEXTURE_FILENAME = data/tex/B_Button.png
+	POS = 668.00 684.00 0.00
+	ROT = 0.00 0.00 0.00
+	SIZE = 138.00 100.00 0.00
+END_UISET
+
+UISET
+	TEXTURE_FILENAME = data/tex/Explanation.png
+	POS = 963.00 689.00 0.00
+	ROT = 0.00 0.00 0.00
+	SIZE = 163.00 45.00 0.00
+END_UISET
+
+UISET
+	TEXTURE_FILENAME = data/tex/Explanation_1.png
+	POS = 749.00 689.00 0.00
+	ROT = 0.00 0.00 0.00
+	SIZE = 264.00 36.00 0.00
+END_UISET
+
+UISET
+	TEXTURE_FILENAME = data/tex/Explanation_2.png
+	POS = 1182.00 689.00 0.00
+	ROT = 0.00 0.00 0.00
+	SIZE = 138.00 42.00 0.00
+END_UISET
+
+UISET
+	TEXTURE_FILENAME = data/tex/crossKey.png
+	POS = 840.00 681.00 0.00
+	ROT = 0.00 0.00 0.00
+	SIZE = 65.00 62.00 0.00
+END_UISET
+
+UISET
+	TEXTURE_FILENAME = data/tex/RB.png
+	POS = 1082.00 684.00 0.00
+	ROT = 0.00 0.00 0.00
+	SIZE = 86.00 70.00 0.00
+END_UISET
+
+END_SCRIPT
