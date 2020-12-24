@@ -151,7 +151,6 @@ HRESULT CPlayer::Init(void)
 
 	// âeÇÃê∂ê¨
 	m_pShadow = CShadow::Create();
-
 	return S_OK;
 }
 

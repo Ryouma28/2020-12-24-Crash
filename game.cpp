@@ -102,6 +102,8 @@ HRESULT CGame::Init(void)
 	//// ネットワークでのゲーム時初期化処理
 	//CManager::GetNetwork()->InitGame();
 
+	CStartSignal::Create();
+
 	return S_OK;
 }
 
