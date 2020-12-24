@@ -18,6 +18,7 @@ CCounter::CCounter(CScene::PRIORITY obj = CScene::PRIORITY_UI) : CScene(obj)
 
 	m_distance = D3DXVECTOR3_ZERO;
 	m_IntervalNum = D3DXVECTOR3_ZERO;
+	m_bVariableNum = false;
 	m_nLength = 0;
 }
 
@@ -162,18 +163,21 @@ void CCounter::SetNumber(int nValue)
 		// ”ŽšÝ’è
 		m_vNumber[nCount]->SetNumber(nNumber);
 
-		if (m_vNumber.size() - nCount <= nLength)
-		{// Å‘åŒ…”‚æ‚è¬‚³‚¢Œ…‚¾‚Á‚½‚Æ‚«
-			if (!m_vNumber[nCount]->GetActive())
-			{
-				m_vNumber[nCount]->SetActive(true);
+		if (m_bVariableNum)
+		{
+			if (m_vNumber.size() - nCount <= nLength)
+			{// Å‘åŒ…”‚æ‚è¬‚³‚¢Œ…‚¾‚Á‚½‚Æ‚«
+				if (!m_vNumber[nCount]->GetActive())
+				{
+					m_vNumber[nCount]->SetActive(true);
+				}
 			}
-		}
-		else
-		{// Å‘åŒ…”‚æ‚è‘å‚«‚¢Œ…‚¾‚Á‚½‚Æ‚«
-			if (m_vNumber[nCount]->GetActive())
-			{
-				m_vNumber[nCount]->SetActive(false);
+			else
+			{// Å‘åŒ…”‚æ‚è‘å‚«‚¢Œ…‚¾‚Á‚½‚Æ‚«
+				if (m_vNumber[nCount]->GetActive())
+				{
+					m_vNumber[nCount]->SetActive(false);
+				}
 			}
 		}
 	}

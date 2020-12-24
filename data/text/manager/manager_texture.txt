@@ -12,10 +12,7 @@ SCRIPT			# この行は絶対消さないこと！
 MODEL_FILENAME = data/tex/star.png					# [0]星
 MODEL_FILENAME = data/tex/crossKey.png				# [1]十字キー
 MODEL_FILENAME = data/tex/B_Button.png				# [2]Bキー
-MODEL_FILENAME = data/tex/Explanation.png			# [3]説明
-MODEL_FILENAME = data/tex/Explanation_1.png			# [4]説明
-MODEL_FILENAME = data/tex/Explanation_2.png			# [5]説明
-MODEL_FILENAME = data/tex/RB.png					# [6]説明
-MODEL_FILENAME = data/tex/Finish.png				# [7]ゴール
+MODEL_FILENAME = data/tex/SCORE.png					# [3]すこあ
+MODEL_FILENAME = data/tex/Finish.png				# [4]ゴール
 
 END_SCRIPT		# この行は絶対消さないこと！
