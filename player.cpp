@@ -72,6 +72,9 @@ CPlayer::CPlayer(CScene::PRIORITY obj = CScene::PRIORITY_PLAYER) : CSceneX(obj)
 	// 優先度の設定
 	SetObjType(CScene::PRIORITY_PLAYER);				// オブジェクトタイプ
 
+	m_pos = ZeroVector3;								// 位置の初期化
+	m_vecAxis = ZeroVector3;							// 回転軸の初期化
+	m_fValueRot = 0.0f;									// 回転角の初期化
 	m_nLife = 100;										// 体力の初期化
 	m_rot = D3DXVECTOR3(0.0f, INIT_ROT, 0.0f);			// 回転の初期化
 	m_fSpeed = 0;										// スピードの初期化
@@ -137,26 +140,6 @@ HRESULT CPlayer::Init(void)
 
 	// キャラクターの初期化処理
 	CSceneX::Init();
-
-	//// アニメーションの設定
-	//AnimationSwitch(ANIMATIONTYPE_NONE);
-
-	//// プレイヤーモデル情報の読み込み
-	//switch (CCharacterSelect::GetCarType())
-	//{
-	//case 0:
-	//	LoadScript(SCRIPT_CAR01, ANIMATIONTYPE_MAX);
-	//	break;
-	//case 1:
-	//	LoadScript(SCRIPT_CAR02, ANIMATIONTYPE_MAX);
-	//	break;
-	//case 2:
-	//	LoadScript(SCRIPT_CAR03, ANIMATIONTYPE_MAX);
-	//	break;
-	//case 3:
-	//	LoadScript(SCRIPT_CAR04, ANIMATIONTYPE_MAX);
-	//	break;
-	//}
 
 	// プレイヤーの当たり判定を生成
 	m_pColPlayerSphere = CColliderSphere::Create(false, 50.0f);
@@ -438,7 +421,7 @@ void CPlayer::Update(void)
 //=============================================================================
 void CPlayer::Draw(void)
 {
-	CSceneX::Draw();
+	CSceneX::DrawSnow();
 }
 
 //=============================================================================
@@ -620,8 +603,6 @@ void CPlayer::Collision(void)
 //=============================================================================
 void CPlayer::Input(void)
 {
-	//ANIMATIONTYPE animType = (ANIMATIONTYPE)GetAnimType();
-
 	// キーボードの取得
 	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
 
@@ -631,22 +612,14 @@ void CPlayer::Input(void)
 	// カメラの取得
 	CCamera *pCamera = CManager::GetCamera();
 
-	// モデルの取得
-	//CModel *pModel = GetModel();
-
-	D3DXVECTOR3 rot = pCamera->GetRotation();
+	//D3DXVECTOR3 rot = pCamera->GetRotation();
 	D3DXVECTOR3 Diff;	// 計算用格納変数
 	float nValueH = 0;									//コントローラー
 	float nValueV = 0;									//コントローラー
 
-	D3DXVECTOR3 modelFrontDiff = D3DXVECTOR3(0, 0, 0);			// モデル前輪計算用マトリックス
-	D3DXVECTOR3 aVec = D3DXVECTOR3(0, 0, 0);					// プレイヤー加速度ベクトル
 	D3DXVECTOR3 cameraVec = D3DXVECTOR3(0, 0, 0);				// カメラの方向ベクトル
-	D3DXVECTOR3 moveVec = D3DXVECTOR3(0, 0, 0);					// プレイヤー運動ベクトル
-	//D3DXVECTOR3 fModelRot = pModel[MODEL_FRONT].GetRotation();	// モデル前輪回転情報
-	//D3DXVECTOR3 fModelRotRear = pModel[MODEL_REAR].GetRotation();// モデル後輪回転情報
-	float fTireRotSpeed = 0.0f;									// タイヤ回転速度
 	m_fSpeed = 0;
+	m_pos = GetPosition();		// 位置取得
 
 	// ====================== コントローラー ====================== //
 	if (!m_bEvent)
@@ -666,9 +639,6 @@ void CPlayer::Input(void)
 					// 速度設定
 					m_fSpeed = -m_fPuzzleMaxSPeed;
 
-					// タイヤ回転方向設定
-					fTireRotSpeed = TIRE_ROT_SPEED;
-
 					// 動いていい
 					m_bMove = true;
 
@@ -682,9 +652,6 @@ void CPlayer::Input(void)
 
 					// 速度設定
 					m_fSpeed = m_fPuzzleMaxSPeed;
-
-					// タイヤ回転方向設定
-					fTireRotSpeed = -TIRE_ROT_SPEED;
 
 					// 動いていい
 					m_bMove = true;
@@ -776,10 +743,6 @@ void CPlayer::Input(void)
 							m_fAcceleration += ACCEKERATION_ADDITION;
 						}
 
-						// 加速度ベクトル設定
-						aVec.x = sinf(m_rot.y + m_dest.y + D3DX_PI / 2) * m_fAcceleration;
-						aVec.z = cosf(m_rot.y + m_dest.y + D3DX_PI / 2) * m_fAcceleration;
-
 						// ドリフトボタンを離したとき
 						if (!pGamepad->GetControllerPress(0, JOYPADKEY_RIGHT_TRIGGER))
 						{
@@ -816,10 +779,6 @@ void CPlayer::Input(void)
 							// 加速度
 							m_fAcceleration -= ACCEKERATION_ADDITION;
 						}
-
-						// 加速度ベクトル設定
-						aVec.x = sinf(m_rot.y + m_dest.y - D3DX_PI / 2) * m_fAcceleration;
-						aVec.z = cosf(m_rot.y + m_dest.y - D3DX_PI / 2) * m_fAcceleration;
 
 						// ドリフトボタンを離したとき
 						if (!pGamepad->GetControllerPress(0, JOYPADKEY_RIGHT_TRIGGER))
@@ -909,284 +868,171 @@ void CPlayer::Input(void)
 		}
 	}
 
-	//static int nCntAura = 0;
-	//nCntAura++;
+	if (!m_bEvent)
+	{// イベントが発生していなかったとき
 
-	//CEffect::Aura(nCntAura, false, GetPosition());
+		float fMomentX = sinf(m_dest.y);			//X角度
+		float fMomentZ = cosf(m_dest.y);			//Z角度
 
-	// モデルがあるとき
-	//if (pModel != NULL)
-	{
-		//// キーボード入力処理
-		//InputKeyboard(fTireRotSpeed, aVec);
+		if (pKeyboard->GetPressKeyboard(DIK_A))
+		{// 方向キー左ボタンを押されたとき
+			if (pKeyboard->GetPressKeyboard(DIK_W))
+			{// 左上
+				m_move.x += sinf(D3DX_PI * -0.25f)*0.3f;
+				m_move.z += cosf(D3DX_PI * -0.25f)*0.3f;
+				//プレイヤー旋回
+				m_dest.y = (-D3DX_PI * -0.75f);
+				//クォータニオン回転処理
+				m_vecAxis.x = fMomentX * cosf(D3DX_PI / 2.0f) - fMomentZ * sinf(D3DX_PI / 2.0f);
+				m_vecAxis.z = fMomentX * sinf(D3DX_PI / 2.0f) + fMomentZ * cosf(D3DX_PI / 2.0f);
 
-		if (!m_bEvent)
-		{// イベントが発生していなかったとき
-
-		//上下操作
-			if (pKeyboard->GetPressKeyboard(MOVE_ACCEL))
-			{
-				// 前輪モデルの最終目的座標
-				m_dest.y = 0.0f;
-
-				// 速度設定
-				m_fSpeed = -m_fPuzzleMaxSPeed;
-
-				// タイヤ回転方向設定
-				fTireRotSpeed = TIRE_ROT_SPEED;
-
-				// 動いていい
-				m_bMove = true;
-
-				// アクセルボタンを押した
-				m_bAccel = true;
 			}
-			else if (pKeyboard->GetPressKeyboard(MOVE_BRAKE))
-			{
-				// 前輪モデルの最終目的座標
-				m_dest.y = 0.0f;
+			else if (pKeyboard->GetPressKeyboard(DIK_S))
+			{// 左下
+				m_move.x += sinf(D3DX_PI * -0.75f)*0.3f;
+				m_move.z += cosf(D3DX_PI * -0.75f)*0.3f;
+				//プレイヤー旋回
+				m_dest.y = (-D3DX_PI * -0.25f);
+				//クォータニオン回転処理
+				m_vecAxis.x = fMomentX * cosf(D3DX_PI / 2.0f) - fMomentZ * sinf(D3DX_PI / 2.0f);
+				m_vecAxis.z = fMomentX * sinf(D3DX_PI / 2.0f) + fMomentZ * cosf(D3DX_PI / 2.0f);
 
-				// 速度設定
-				m_fSpeed = m_fPuzzleMaxSPeed;
-
-				// タイヤ回転方向設定
-				fTireRotSpeed = -TIRE_ROT_SPEED;
-
-				// 動いていい
-				m_bMove = true;
-			}
-
-			// アクセルボタンを離したとき
-			if (!pKeyboard->GetPressKeyboard(MOVE_ACCEL))
-			{
-				// アクセルボタンを離した
-				m_bAccel = false;
-			}
-
-			// ドリフトボタンを押していないとき
-			if (!pKeyboard->GetPressKeyboard(MOVE_DRIFT))
-			{
-				//左右操作
-				if (pKeyboard->GetPressKeyboard(MOVE_LEFT))
-				{
-					// 前輪モデルの最終目的座標
-					m_dest.y = -CManager::GetTurnVelocity();
-				}
-				else if (pKeyboard->GetPressKeyboard(MOVE_RIGHT))
-				{
-					// 前輪モデルの最終目的座標
-					m_dest.y = CManager::GetTurnVelocity();
-				}
-
-				// ブレーキボタンが押されたとき
-				if (pKeyboard->GetPressKeyboard(MOVE_BRAKE))
-				{
-					//左右操作
-					if (pKeyboard->GetPressKeyboard(MOVE_LEFT))
-					{
-						// 前輪モデルの最終目的座標
-						m_dest.y = CManager::GetTurnVelocity();
-					}
-					else if (pKeyboard->GetPressKeyboard(MOVE_RIGHT))
-					{
-						// 前輪モデルの最終目的座標
-						m_dest.y = -CManager::GetTurnVelocity();
-					}
-				}
-			}
-		}
-
-		// アクセル状態のとき
-		if (m_bAccel)
-		{
-			// ドリフトしていないとき
-			if (!m_bDrift[DRIFT_RIGHT] && !m_bDrift[DRIFT_LEFT])
-			{
-				// ドリフトボタンを押したとき
-				if (pKeyboard->GetPressKeyboard(MOVE_DRIFT))
-				{
-					//左右操作
-					if (pKeyboard->GetPressKeyboard(MOVE_LEFT))
-					{
-						// ドリフトしている状態にする
-						m_bDrift[DRIFT_LEFT] = true;
-					}
-					else if (pKeyboard->GetPressKeyboard(MOVE_RIGHT))
-					{
-						// ドリフトしている状態にする
-						m_bDrift[DRIFT_RIGHT] = true;
-					}
-				}
-			}
-
-			// 右ドリフトしているとき
-			if (m_bDrift[DRIFT_RIGHT])
-			{
-				// 前輪モデルの最終目的地座標
-				m_dest.y = DRIFT_DEST;
-
-				//左右操作
-				if (pKeyboard->GetPressKeyboard(MOVE_LEFT))
-				{
-					// 前輪モデルの最終目的地座標
-					m_dest.y = 0.0f;
-
-					// 加速度
-					m_fAcceleration -= ACCEKERATION_ADDITION;
-				}
-				else if (pKeyboard->GetPressKeyboard(MOVE_RIGHT))
-				{
-					// 前輪モデルの最終目的地座標
-					m_dest.y = ROT_SPEED_DRIFT;
-
-					// 加速度
-					m_fAcceleration += ACCEKERATION_ADDITION;
-				}
-
-				// 加速度ベクトル設定
-				aVec.x = sinf(m_rot.y + m_dest.y + D3DX_PI / 2) * m_fAcceleration;
-				aVec.z = cosf(m_rot.y + m_dest.y + D3DX_PI / 2) * m_fAcceleration;
-
-				// ドリフトボタンを離したとき
-				if (!pKeyboard->GetPressKeyboard(MOVE_DRIFT))
-				{
-					// ドリフト最大までカウント
-					for (int nCnt = 0; nCnt < DRIFT_MAX; nCnt++)
-					{
-						// ドリフトしていない状態にする
-						m_bDrift[nCnt] = false;
-
-						// 加速度初期化
-						m_fAcceleration = ACCEKERATION;
-					}
-				}
-			}
-			else if (m_bDrift[DRIFT_LEFT])
-			{// 左ドリフトのとき
-			 // 前輪モデルの最終目的地座標
-				m_dest.y = -DRIFT_DEST;
-
-				//左右操作
-				if (pKeyboard->GetPressKeyboard(MOVE_LEFT))
-				{
-					// 前輪モデルの最終目的地座標
-					m_dest.y = -ROT_SPEED_DRIFT;
-
-					// 加速度
-					m_fAcceleration += ACCEKERATION_ADDITION;
-				}
-				else if (pKeyboard->GetPressKeyboard(MOVE_RIGHT))
-				{
-					// 前輪モデルの最終目的地座標
-					m_dest.y = 0.0f;
-
-					// 加速度
-					m_fAcceleration -= ACCEKERATION_ADDITION;
-				}
-
-				// 加速度ベクトル設定
-				aVec.x = sinf(m_rot.y + m_dest.y - D3DX_PI / 2) * m_fAcceleration;
-				aVec.z = cosf(m_rot.y + m_dest.y - D3DX_PI / 2) * m_fAcceleration;
-
-				// ドリフトボタンを離したとき
-				if (!pKeyboard->GetPressKeyboard(MOVE_DRIFT))
-				{
-					// ドリフト最大までカウント
-					for (int nCnt = 0; nCnt < DRIFT_MAX; nCnt++)
-					{
-						// ドリフトしていない状態にする
-						m_bDrift[nCnt] = false;
-
-						// 加速度初期化
-						m_fAcceleration = ACCEKERATION;
-					}
-				}
-			}
-		}
-
-		{// 前輪設定 & タイヤ設定
-			// モデルの回転と目標地点の差を格納
-			//modelFrontDiff.y = fModelRot.y - m_dest.y;
-
-			// 回転の補正
-			CTakaseiLibrary::RotRevision(&modelFrontDiff);
-
-			// モデルを徐々に回転させていく
-			//fModelRot.y -= modelFrontDiff.y * ROT_AMOUNT;
-		}
-
-		{// カメラ設定
-			// タイヤの回転の半分を差と格納
-			cameraVec.y = m_cameraRot.y - (m_rot.y + (m_dest.y * 0.85f));
-
-			// 回転の補正
-			CTakaseiLibrary::RotRevision(&cameraVec);
-
-			// カメラを徐々に回転させていく
-			m_cameraRot.y -= cameraVec.y * CAMERA_ROT_SPEED;
-
-			// 回転の補正
-			CTakaseiLibrary::RotRevision(&m_cameraRot);
-
-			// カメラ回転設定
-			SetCameraRot(m_cameraRot);
-		}
-
-		// 移動していいとき
-		if (m_bMove)
-		{
-			// タイヤを回す
-			//fModelRot.x -= fTireRotSpeed;
-			//fModelRotRear.x -= fTireRotSpeed;
-
-			//// 回転の補正
-			//CTakaseiLibrary::RotRevision(&fModelRot);
-			//// 回転の補正
-			//CTakaseiLibrary::RotRevision(&fModelRotRear);
-
-			//// モデルの回転の設定
-			//pModel[MODEL_FRONT].SetRotation(fModelRot);
-			//// モデルの回転の設定
-			//pModel[MODEL_REAR].SetRotation(fModelRotRear);
-
-			// ドリフトしているとき
-			if (m_bDrift[DRIFT_RIGHT] || m_bDrift[DRIFT_LEFT])
-			{
-				// 運動ベクトル計算
-				moveVec.x += sinf(m_rot.y) * m_fSpeed * DRIFT_DECREACE;
-				moveVec.z += cosf(m_rot.y) * m_fSpeed * DRIFT_DECREACE;
 			}
 			else
-			{
-				// 運動ベクトル計算
-				moveVec.x += sinf(m_rot.y) * m_fSpeed;
-				moveVec.z += cosf(m_rot.y) * m_fSpeed;
+			{// 左
+				m_move.x += sinf(D3DX_PI * -0.5f)*0.3f;
+				m_move.z += cosf(D3DX_PI * -0.5f)*0.3f;
+				//プレイヤー旋回
+				m_dest.y = (-D3DX_PI * -0.5f);
+				//クォータニオン回転処理
+				m_vecAxis.x = fMomentX * cosf(D3DX_PI / 2.0f) - fMomentZ * sinf(D3DX_PI / 2.0f);
+				m_vecAxis.z = fMomentX * sinf(D3DX_PI / 2.0f) + fMomentZ * cosf(D3DX_PI / 2.0f);
+
 			}
+		}
+		else if (pKeyboard->GetPressKeyboard(DIK_D))
+		{// 方向キー右ボタンを押されたとき
+			if (pKeyboard->GetPressKeyboard(DIK_W))
+			{// 右上
+				m_move.x += sinf(D3DX_PI * 0.25f)*0.3f;
+				m_move.z += cosf(D3DX_PI * 0.25f)*0.3f;
+				//プレイヤー旋回
+				m_dest.y = (-D3DX_PI * 0.75f);
+				//クォータニオン回転処理
+				m_vecAxis.x = fMomentX * cosf(D3DX_PI / 2.0f) - fMomentZ * sinf(D3DX_PI / 2.0f);
+				m_vecAxis.z = fMomentX * sinf(D3DX_PI / 2.0f) + fMomentZ * cosf(D3DX_PI / 2.0f);
 
-			// 回転の補正
-			CTakaseiLibrary::RotRevision(&m_dest);
+			}
+			else if (pKeyboard->GetPressKeyboard(DIK_S))
+			{// 右下
+				m_move.x += sinf(D3DX_PI * 0.75f)*0.3f;
+				m_move.z += cosf(D3DX_PI * 0.75f)*0.3f;
+				//プレイヤー旋回
+				m_dest.y = (-D3DX_PI * 0.25f);
+				//クォータニオン回転処理
+				m_vecAxis.x = fMomentX * cosf(D3DX_PI / 2.0f) - fMomentZ * sinf(D3DX_PI / 2.0f);
+				m_vecAxis.z = fMomentX * sinf(D3DX_PI / 2.0f) + fMomentZ * cosf(D3DX_PI / 2.0f);
 
-			// プレイヤーを徐々に回転させていく
-			m_rot.y += m_dest.y * ROT_AMOUNT;
+			}
+			else
+			{// 右
+				m_move.x += sinf(D3DX_PI * 0.5f)*0.3f;
+				m_move.z += cosf(D3DX_PI * 0.5f)*0.3f;
+				//プレイヤー旋回
+				m_dest.y = (D3DX_PI * 0.5f);
+				//クォータニオン回転処理
+				m_vecAxis.x = fMomentX * cosf(-D3DX_PI / 2.0f) - fMomentZ * sinf(-D3DX_PI / 2.0f);
+				m_vecAxis.z = fMomentX * sinf(-D3DX_PI / 2.0f) + fMomentZ * cosf(-D3DX_PI / 2.0f);
+			}
+		}
+		else if (pKeyboard->GetPressKeyboard(DIK_W))
+		{// 上
+			m_move.x += sinf(D3DX_PI * 0.0f)*0.3f;
+			m_move.z += cosf(D3DX_PI * 0.0f)*0.3f;
+			//プレイヤー旋回
+			m_dest.y = (D3DX_PI * 1.0f);
+			//クォータニオン回転処理
+			m_vecAxis.x = fMomentX * cosf(D3DX_PI / 2.0f) - fMomentZ * sinf(D3DX_PI / 2.0f);
+			m_vecAxis.z = fMomentX * sinf(D3DX_PI / 2.0f) + fMomentZ * cosf(D3DX_PI / 2.0f);
+
+		}
+		else if (pKeyboard->GetPressKeyboard(DIK_S))
+		{// 下
+		 // 移動量(回転なし)
+			m_move.x += sinf(D3DX_PI * 1.0f)*0.3f;
+			m_move.z += cosf(D3DX_PI * 1.0f)*0.3f;
+
+			//プレイヤー旋回
+			m_dest.y = (D3DX_PI * 0.0f);
+
+			//クォータニオン回転処理
+			m_vecAxis.x = fMomentX * cosf(D3DX_PI / 2.0f) - fMomentZ * sinf(D3DX_PI / 2.0f);
+			m_vecAxis.z = fMomentX * sinf(D3DX_PI / 2.0f) + fMomentZ * cosf(D3DX_PI / 2.0f);
+
 		}
 
-		// アクセルボタンとブレーキボタンを離したとき
-		if (!pGamepad->GetControllerPress(0, JOYPADKEY_A) && !pGamepad->GetControllerPress(0, JOYPADKEY_B) &&
-			!pKeyboard->GetPressKeyboard(MOVE_ACCEL) && !pKeyboard->GetPressKeyboard(MOVE_BRAKE))
+		//クォータニオン(回転量)
+		m_fValueRot = sqrtf(m_move.x * m_move.x + m_move.z * m_move.z) * 0.1f;
+
+		// -3.14より小さかったら
+		if (m_rot.y < -D3DX_PI)
 		{
-			// 移動不可
-			m_bMove = false;
+			// 修正
+			m_rot.y += D3DX_PI * 2;
+		}
+		// 3.14より大きかったら
+		else if (m_rot.y > D3DX_PI)
+		{
+			// 修正
+			m_rot.y -= D3DX_PI * 2;
 		}
 
-		// 移動量設定
-		m_move.x += (moveVec.x + aVec.x) / 2;
-		m_move.z += (moveVec.z + aVec.z) / 2;
+		m_pos += m_move;
 
-		// 回転の補正
-		CTakaseiLibrary::RotRevision(&m_rot);
+		m_move.x += (0 - m_move.x) * 0.1f;
+		m_move.z += (0 - m_move.z) * 0.1f;
 
-		// 回転の設定
+
+		SetPosition(m_pos);
 		SetRotation(m_rot);
+		SetvecAxis(D3DXVECTOR3(m_vecAxis.x, m_vecAxis.y, m_vecAxis.z));
+		SetfValueRot(m_fValueRot);
+		CSceneX::Update();
+	}
+
+	//{// カメラ設定
+	//	// タイヤの回転の半分を差と格納
+	//	cameraVec.y = m_cameraRot.y - (m_rot.y + (m_dest.y * 0.85f));
+
+	//	// 回転の補正
+	//	CTakaseiLibrary::RotRevision(&cameraVec);
+
+	//	// カメラを徐々に回転させていく
+	//	m_cameraRot.y -= cameraVec.y * CAMERA_ROT_SPEED;
+
+	//	// 回転の補正
+	//	CTakaseiLibrary::RotRevision(&m_cameraRot);
+
+	//	// カメラ回転設定
+	//	SetCameraRot(m_cameraRot);
+	//}
+
+	// 移動していいとき
+	if (m_bMove)
+	{
+		// 回転の補正
+		CTakaseiLibrary::RotRevision(&m_dest);
+
+		// プレイヤーを徐々に回転させていく
+		m_rot.y += m_dest.y * ROT_AMOUNT;
+	}
+
+	// アクセルボタンとブレーキボタンを離したとき
+	if (!pGamepad->GetControllerPress(0, JOYPADKEY_A) && !pGamepad->GetControllerPress(0, JOYPADKEY_B) &&
+		!pKeyboard->GetPressKeyboard(MOVE_ACCEL) && !pKeyboard->GetPressKeyboard(MOVE_BRAKE))
+	{
+		// 移動不可
+		m_bMove = false;
 	}
 
 	CSound *pSound = CManager::GetSound();				// サウンドの取得
