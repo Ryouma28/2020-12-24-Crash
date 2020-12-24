@@ -36,6 +36,7 @@
 #include "startSignal.h"
 #include "shadow.h"
 #include "finishUi.h"
+#include "counter.h"
 
 //=============================================================================
 // Ã“Iƒƒ“ƒo•Ï”

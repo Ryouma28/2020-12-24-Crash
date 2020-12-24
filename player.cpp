@@ -36,6 +36,7 @@
 #include "ui.h"
 #include "shadow.h"
 #include "meshSphere.h"
+#include "counter.h"
 
 //=============================================================================
 // 前方宣言
@@ -134,6 +135,20 @@ HRESULT CPlayer::Init(void)
 
 	pos = D3DXVECTOR3(0.0f, 350.0f, 0.0f);			// プレイヤーの位置設定
 
+	CUi *pUi = CUi::Create();
+
+	if (pUi != NULL)
+	{
+		pUi->LoadScript("data/text/ui/score.txt");
+		pUi->SetPosition(D3DXVECTOR3(874.00, 51.00, 0.00));
+
+		CCounter *pCounter = pUi->GetCounter("time");
+
+		if (pCounter != NULL)
+		{
+			pCounter->SetNumber(2568);
+		}
+	}
 	if (pCamera != NULL)
 	{
 		pCamera->SetPosCamera(pos, D3DXVECTOR3(0.0f, D3DX_PI, 0.0f));
