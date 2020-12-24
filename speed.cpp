@@ -113,20 +113,6 @@ void CSpeed::Update(void)
 	// 時速設定
 	SetDigit(m_fDigit);
 
-	if (m_fDigit >= 50)
-	{
-		CSound *pSound = CManager::GetSound();				// サウンドの取得
-
-		pSound->PlaySoundA(SOUND_LABEL_SE_Speed50Km);		// ダメージ音の再生
-
-	}
-	else if (m_fDigit >= 100)
-	{
-		CSound *pSound = CManager::GetSound();				// サウンドの取得
-
-		pSound->PlaySoundA(SOUND_LABEL_SE_Speed100Km);		// ダメージ音の再生
-
-	}
 	// カウンタが0以上のとき
 	if (m_fDigit >= 0)
 	{
