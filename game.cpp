@@ -87,23 +87,12 @@ HRESULT CGame::Init(void)
 	CObject::LoadScript();
 
 	// 各種アセットの生成＆設置
-	//CMeshField::LoadRand("data/stage/rand.csv", false);			// 床情報の読込
+	CMeshField::LoadRand("data/text/stage/rand.txt", false);			// 床情報の読込
 	//CObject::LoadModel("data/stage/object.csv");					// モデル情報の読込
 	//CEnemy::LoadEnemy("data/stage/enemy.csv");					// 敵情報の読込
 
-	CEnemy *pEnemy = CEnemy::Create();			// クリエイト処理
-
-	if (pEnemy != NULL)
-	{// 敵が存在していたとき
-		pEnemy->SetPosition(D3DXVECTOR3(0.0f, 0.0f, -100.0f));			// ポジションを決める
-		pEnemy->SetTarget(TARGETTYPE_PLAYER);				// 攻撃対象の設定
-	}
-
 	// 時間のクリエイト処理
 	CTime::Create();
-
-	// 時速の生成
-	CSpeed::Create();
 
 	//// モデル情報の読み込み
 	//CObject::LoadModelTest("data/text/stage/stage_1.txt");
@@ -111,33 +100,8 @@ HRESULT CGame::Init(void)
 	// モデル情報の読み込み
 	CObject::LoadModelTest("data/text/model.txt");
 
-	// 内壁情報の読み込み
-	CMeshWall::LoadWall("data/text/stage/wall.txt", false);
-	// 外壁情報の読み込み
-	CMeshWall::LoadWall("data/text/stage/wall02.txt", false);
-
-	int nCntPiece = CPuzzle::GetPieceNum();
-
-	for (int nCnt = 0; nCnt < nCntPiece; nCnt++)
-	{
-		m_bGuideSign[nCnt] = false;
-	}
-	for (int nCnt = 0; nCnt < nCntPiece; nCnt++)
-	{
-		m_bGuideSign[nCnt] = CPuzzle::GetRoute(nCnt);
-		if (m_bGuideSign[nCnt] == true)
-		{
-			m_bRate = true;
-		}
-	}
-	if (m_bRate == true)
-	{
-		// 案内矢印の生成
-		CGuideSign::Create();
-	}
-
-	// ネットワークでのゲーム時初期化処理
-	CManager::GetNetwork()->InitGame();
+	//// ネットワークでのゲーム時初期化処理
+	//CManager::GetNetwork()->InitGame();
 
 	return S_OK;
 }

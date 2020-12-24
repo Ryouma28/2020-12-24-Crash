@@ -168,7 +168,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CResult::LoadAsset();
 	CCharacterSelect::LoadAsset();
 
-	SetMode(MODE_TITLE);																		//モードセレクト
+	SetMode(MODE_GAME);																		//モードセレクト
 
 	CEffect::LoadParticleScript();
 
