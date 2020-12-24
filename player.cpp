@@ -31,7 +31,6 @@
 #include "speed.h"
 #include "wall.h"
 #include "object.h"
-#include "puzzle.h"
 #include "number.h"
 #include "network.h"
 #include "distanceNext.h"

@@ -201,11 +201,8 @@
     <ClInclude Include="number.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="phase.h" />
-    <ClInclude Include="piece.h" />
-    <ClInclude Include="pieceSelect.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="purpose.h" />
-    <ClInclude Include="puzzle.h" />
     <ClInclude Include="ranking.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource.h" />
@@ -271,10 +268,7 @@
     <ClCompile Include="network.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="object.cpp" />
-    <ClCompile Include="piece.cpp" />
-    <ClCompile Include="pieceSelect.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="puzzle.cpp" />
     <ClCompile Include="ranking.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
