@@ -37,6 +37,9 @@
 #include "shadow.h"
 #include "finishUi.h"
 #include "counter.h"
+#include "ranking.h"
+#include "inputKeyboard.h"
+
 
 //=============================================================================
 // 静的メンバ変数
@@ -118,7 +121,6 @@ void CGame::Update(void)
 	{
 		pNetwork->Create();
 	}
-
 #ifdef _DEBUG
 	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
 
@@ -126,6 +128,19 @@ void CGame::Update(void)
 	{
 		CStartSignal::Create();
 	}
+
+	if (CFade::GetFade() == CFade::FADE_NONE)
+	{//フェードが処理をしていないとき
+		if (pKeyboard != NULL)
+		{// キーボードが存在していたとき
+			if (pKeyboard->GetTriggerKeyboard(DIK_RETURN))
+			{// 指定のキーが押されたとき
+				//CRanking::SetResultIndex(nScore);	// ランキングに今回の得点を送る
+				//CFade::SetFade(CManager::MODE_RANKING, CFade::FADETYPE_SLIDE);					//フェードを入れる
+			}
+		}
+	}
+
 #endif
 }
 

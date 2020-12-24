@@ -13,6 +13,8 @@
 #include "bg.h"
 #include "number.h"
 #include "sound.h"
+#include "ui.h"
+#include "counter.h"
 
 //=============================================================================
 // マクロ定義
@@ -29,7 +31,7 @@ int CRanking::m_nResult = 0;
 //=============================================================================
 CRanking::CRanking()
 {
-
+	m_pUi = NULL;
 }
 
 //=============================================================================
@@ -48,22 +50,100 @@ HRESULT CRanking::Init(void)
 	CBg::Load();				// 背景の読み込み
 	CBg::Create();				// 背景の作成
 
-	// =============== タイトル ================ //
-	CScene2D *pScene2D = CScene2D::Create(CScene::PRIORITY_UI);
+	m_pUi = CUi::Create();
 
-	if (pScene2D != NULL)
-	{// pScene2Dが存在していたとき
-		pScene2D->BindTexture("data/tex/ranking.png");		// 画像の読み込み
-		pScene2D->SetPosition(D3DXVECTOR3(300.0f, 100.0f, 0.0f));					// 位置設定
-		pScene2D->SetSize(D3DXVECTOR3(500.0f, 100.0f, 0.0f));						// 大きさ設定
-		pScene2D->SetTransform();													// 頂点情報の更新
+	if (m_pUi != NULL)
+	{
+		m_pUi->LoadScript("data/text/ui/ranking.txt");
+
+		CCounter *pCounter = m_pUi->GetCounter("1");
+
+		if (pCounter != NULL)
+		{
+			pCounter->SetNumber(100000);
+		}
+
+		pCounter = m_pUi->GetCounter("2");
+
+		if (pCounter != NULL)
+		{
+			pCounter->SetNumber(200000);
+		}
+
+		pCounter = m_pUi->GetCounter("3");
+
+		if (pCounter != NULL)
+		{
+			pCounter->SetNumber(300000);
+		}
+
+		pCounter = m_pUi->GetCounter("4");
+
+		if (pCounter != NULL)
+		{
+			pCounter->SetNumber(400000);
+		}
+
+		pCounter = m_pUi->GetCounter("5");
+
+		if (pCounter != NULL)
+		{
+			pCounter->SetNumber(500000);
+		}
 	}
+
+
+	//// =============== タイトル ================ //
+	//CScene2D *pScene2D = CScene2D::Create(CScene::PRIORITY_UI);
+
+	//if (pScene2D != NULL)
+	//{// pScene2Dが存在していたとき
+	//	pScene2D->BindTexture("data/tex/ranking.png");		// 画像の読み込み
+	//	pScene2D->SetPosition(D3DXVECTOR3(300.0f, 100.0f, 0.0f));					// 位置設定
+	//	pScene2D->SetSize(D3DXVECTOR3(500.0f, 100.0f, 0.0f));						// 大きさ設定
+	//	pScene2D->SetTransform();													// 頂点情報の更新
+	//}
 
 	// ランキングを読み込む
 	LoadRanking();
 
 	// ランキングを整理する
 	ConvertRanking(m_nResult);
+
+	CCounter *pCounter = m_pUi->GetCounter("1");
+
+	if (pCounter != NULL)
+	{
+		pCounter->SetNumber(m_aScore[0]);
+	}
+
+	pCounter = m_pUi->GetCounter("2");
+
+	if (pCounter != NULL)
+	{
+		pCounter->SetNumber(m_aScore[1]);
+	}
+
+	pCounter = m_pUi->GetCounter("3");
+
+	if (pCounter != NULL)
+	{
+		pCounter->SetNumber(m_aScore[2]);
+	}
+
+	pCounter = m_pUi->GetCounter("4");
+
+	if (pCounter != NULL)
+	{
+		pCounter->SetNumber(m_aScore[3]);
+	}
+
+	pCounter = m_pUi->GetCounter("5");
+
+	if (pCounter != NULL)
+	{
+		pCounter->SetNumber(m_aScore[4]);
+	}
 
 	// ランキングを保存する
 	SaveRanking();
