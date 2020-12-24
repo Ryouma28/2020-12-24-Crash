@@ -21,7 +21,6 @@
 #include "light.h"
 #include "sound.h"
 #include "sceneX.h"
-#include "puzzle.h"
 #include "network.h"
 #include "effect.h"
 #include "write.h"
@@ -163,7 +162,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	m_pSound->Init(hWnd);
 
 	CTitle::LoadAsset();
-	CPuzzle::LoadAsset();
 	CGame::LoadAsset();
 	CResult::LoadAsset();
 	CCharacterSelect::LoadAsset();
@@ -243,14 +241,6 @@ void CManager::Uninit(void)
 		m_pTitle->Uninit();																			// タイトルの終了処理
 		delete m_pTitle;																			// タイトルのメモリ解放
 		m_pTitle = NULL;																			// ポインタをNULLにする
-	}
-
-	// パズルの開放処理
-	if (m_pPuzzle != NULL)
-	{
-		m_pPuzzle->Uninit();																		// パズルの終了処理
-		delete m_pPuzzle;																			// パズルのメモリ解放
-		m_pPuzzle = NULL;																			// ポインタをNULLにする
 	}
 
 	// ゲームの開放処理
@@ -344,12 +334,6 @@ void CManager::Update(void)
 	case CManager::MODE_STAGE_SELECT:
 
 		break;
-	case CManager::MODE_PUZZLE_CUSTOM:
-		if (m_pPuzzle != NULL)
-		{
-			m_pPuzzle->Update();
-		}
-		break;
 	case CManager::MODE_GAME:
 		if (m_pGame != NULL)
 		{
@@ -428,14 +412,6 @@ void CManager::SetMode(MODE mode)
 	case MODE_STAGE_SELECT:
 
 		break;
-	case MODE_PUZZLE_CUSTOM:
-		if (m_pPuzzle != NULL)
-		{
-			m_pPuzzle->Uninit();
-			delete m_pPuzzle;
-			m_pPuzzle = NULL;
-		}
-		break;
 	case MODE_GAME:
 		if (m_pGame != NULL)
 		{
@@ -486,13 +462,6 @@ void CManager::SetMode(MODE mode)
 
 		break;
 	case MODE_STAGE_SELECT:
-
-		break;
-	case MODE_PUZZLE_CUSTOM:
-		m_pPuzzle = new CPuzzle;
-		m_pPuzzle->Init();
-		m_pSound->PlaySoundA(SOUND_LABEL_BGM_Puzzle);
-		m_pSound->SetVolume(SOUND_LABEL_BGM_Puzzle, 0.1f);
 
 		break;
 	case MODE_GAME:
