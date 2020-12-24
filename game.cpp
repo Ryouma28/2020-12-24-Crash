@@ -96,7 +96,7 @@ HRESULT CGame::Init(void)
 	//CObject::LoadModelTest("data/text/stage/stage_1.txt");
 
 	// モデル情報の読み込み
-	CObject::LoadModelTest("data/text/model.txt");
+	CObject::LoadModelTest("data/text/stage/model.txt");
 
 	//// ネットワークでのゲーム時初期化処理
 	//CManager::GetNetwork()->InitGame();

@@ -35,6 +35,7 @@
 #include "distanceNext.h"
 #include "ui.h"
 #include "shadow.h"
+#include "meshSphere.h"
 
 //=============================================================================
 // 前方宣言
@@ -71,6 +72,7 @@ CPlayer::CPlayer(CScene::PRIORITY obj = CScene::PRIORITY_PLAYER) : CSceneX(obj)
 {
 	// 優先度の設定
 	SetObjType(CScene::PRIORITY_PLAYER);				// オブジェクトタイプ
+	SetSize(D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 
 	m_vecAxis = ZeroVector3;							// 回転軸の初期化
 	m_fValueRot = 0.0f;									// 回転角の初期化
@@ -130,7 +132,7 @@ HRESULT CPlayer::Init(void)
 	CCamera *pCamera = CManager::GetCamera();
 	D3DXVECTOR3 pos = GetPosition();							// プレイヤーの位置取得
 
-	pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// プレイヤーの位置設定
+	pos = D3DXVECTOR3(0.0f, 350.0f, 0.0f);			// プレイヤーの位置設定
 
 	if (pCamera != NULL)
 	{
@@ -141,14 +143,14 @@ HRESULT CPlayer::Init(void)
 	CSceneX::Init();
 
 	// プレイヤーの当たり判定を生成
-	m_pColPlayerSphere = CColliderSphere::Create(false, 20.0f);
+	m_pColPlayerSphere = CColliderSphere::Create(false, 500.0f);
 
 	if (m_pColPlayerSphere != NULL)
 	{ //球体のポインタがNULLではないとき
 		m_pColPlayerSphere->SetScene(this);
 		m_pColPlayerSphere->SetTag("player");										// タグ の設定
 		m_pColPlayerSphere->SetPosition(pos);										// 位置 の設定
-		m_pColPlayerSphere->SetOffset(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
+		m_pColPlayerSphere->SetOffset(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 
 	// プレイヤーの当たり判定を生成
@@ -166,7 +168,7 @@ HRESULT CPlayer::Init(void)
 	SetPosition(pos);
 
 	// 影の生成
-	m_pShadow = CShadow::Create();
+	//m_pShadow = CShadow::Create();
 	return S_OK;
 }
 
@@ -246,11 +248,28 @@ void CPlayer::Update(void)
 
 	if (pScene != NULL)
 	{// 今立っている床が存在したとき
+		m_size = GetSize();
 		CMeshField *pFloor = (CMeshField*)pScene;									// キャスト
 		fHeight = pFloor->GetHeight(pos);
+		fHeight += 350.0f;
+		pos.y = fHeight + (m_size.y * 5);
 
 		RANDTYPE Type = pFloor->GetRandType();
 
+		if (fabs(m_move.x) > 1.0f || fabs(m_move.y) > 1.0f || fabs(m_move.z) > 1.0f)
+		{
+			if (Type == RANDTYPE_GRASS)
+			{
+				if (m_size.x < 100000.0f)
+				{
+
+				}
+			}
+			else if (Type == RANDTYPE_SAND)
+			{
+				//	pSound->PlaySoundA((SOUND_LABEL)(CManager::GetRand(3) + (int)SOUND_LABEL_SE_SAND_1));
+			}
+		}
 		//if (animType == ANIMATIONTYPE_RUN)
 		//{
 		//	if (currentKey == 5 || currentKey == 0)
@@ -457,7 +476,7 @@ HRESULT CPlayer::Load(void)
 	// テクスチャの読み込み
 	//D3DXCreateTextureFromFile(pDevice, PLAYER_TEX, &m_pTexture);
 	// Xファイルの読み込み
-	D3DXLoadMeshFromX("data/model/candy.x", D3DXMESH_SYSTEMMEM, pDevice, NULL, &m_pBuffMatModel, NULL, &m_nNumMatModel, &m_pMeshModel);
+	D3DXLoadMeshFromX("data/model/SnowBall.x", D3DXMESH_SYSTEMMEM, pDevice, NULL, &m_pBuffMatModel, NULL, &m_nNumMatModel, &m_pMeshModel);
 
 	return S_OK;
 }
@@ -1456,6 +1475,10 @@ void CPlayer::Debug(void)
 		ImGui::Text("rot = %.2f, %.2f, %.2f", m_rot.x, m_rot.y, m_rot.z);								// プレイヤーの回転を表示
 		ImGui::Text("move = %.2f, %.2f, %.2f", m_move.x, m_move.y, m_move.z);								// プレイヤーの現在位置を表示
 		ImGui::Text("HP = %d", m_nLife);				// プレイヤーの体力を表示
+
+		D3DXVECTOR3 size = GetSize();
+		ImGui::DragFloat3(u8"大きさ", (float*)size);
+		SetSize(size);
 
 		ImGui::Checkbox("ColliderWithWall", &m_bColliderWithWall);
 
