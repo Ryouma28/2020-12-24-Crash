@@ -86,6 +86,7 @@ CPlayer::CPlayer(CScene::PRIORITY obj = CScene::PRIORITY_PLAYER) : CSceneX(obj)
 	m_vectorOld = ZeroVector3;							// 前回のベクトル向き
 	m_cameraRot = D3DXVECTOR3(0, D3DX_PI, 0);			// カメラの回転情報初期化
 	m_pColPlayerSphere = NULL;							// プレイヤー当たり判定ポインタの初期化
+	m_pColPlayerBox = NULL;
 	m_pDistanceNext = NULL;								// 次のプレイヤーとの距離のUI
 	m_bHit = false;										// 当たり判定フラグの初期亜化
 	m_bJump = false;									// ジャンプフラグの初期化
@@ -99,6 +100,8 @@ CPlayer::CPlayer(CScene::PRIORITY obj = CScene::PRIORITY_PLAYER) : CSceneX(obj)
 	m_bAccel = false;									// アクセルを押しているかのフラグ
 	m_bColliderWithWall = true;							// 壁の当たり判定
 	m_bGoal = false;									// ゴールフラグ
+	m_nPoint = 0;
+	m_pUi = NULL;
 
 	m_pRank = NULL;
 
@@ -135,14 +138,14 @@ HRESULT CPlayer::Init(void)
 
 	pos = D3DXVECTOR3(0.0f, 350.0f, 0.0f);			// プレイヤーの位置設定
 
-	CUi *pUi = CUi::Create();
+	m_pUi = CUi::Create();
 
-	if (pUi != NULL)
+	if (m_pUi != NULL)
 	{
-		pUi->LoadScript("data/text/ui/score.txt");
-		pUi->SetPosition(D3DXVECTOR3(874.00, 51.00, 0.00));
+		m_pUi->LoadScript("data/text/ui/score.txt");
+		m_pUi->SetPosition(D3DXVECTOR3(874.00, 51.00, 0.00));
 
-		CCounter *pCounter = pUi->GetCounter("time");
+		CCounter *pCounter = m_pUi->GetCounter("time");
 
 		if (pCounter != NULL)
 		{
@@ -158,7 +161,7 @@ HRESULT CPlayer::Init(void)
 	CSceneX::Init();
 
 	// プレイヤーの当たり判定を生成
-	m_pColPlayerSphere = CColliderSphere::Create(false, 500.0f);
+	//m_pColPlayerSphere = CColliderSphere::Create(false, 500.0f);
 
 	if (m_pColPlayerSphere != NULL)
 	{ //球体のポインタがNULLではないとき
@@ -169,15 +172,15 @@ HRESULT CPlayer::Init(void)
 	}
 
 	// プレイヤーの当たり判定を生成
-	//m_pColPlayerBox = CColliderBox::Create(false, D3DXVECTOR3(1.0f, 1.0f, 1.0f) * 50.0f);
+	m_pColPlayerBox = CColliderBox::Create(true, D3DXVECTOR3(500.0f, 500.0f, 500.0f));
 
-	//if (m_pColPlayerBox != NULL)
-	//{ //球体のポインタがNULLではないとき
-	//	m_pColPlayerBox->SetScene(this);
-	//	m_pColPlayerBox->SetTag("player");										// タグ の設定
-	//	m_pColPlayerBox->SetPosition(pos);										// 位置 の設定
-	//	m_pColPlayerBox->SetOffset(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
-	//}
+	if (m_pColPlayerBox != NULL)
+	{ //球体のポインタがNULLではないとき
+		m_pColPlayerBox->SetScene(this);
+		m_pColPlayerBox->SetTag("player");										// タグ の設定
+		m_pColPlayerBox->SetPosition(pos);										// 位置 の設定
+		m_pColPlayerBox->SetOffset(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
+	}
 
 	// 位置の設定
 	SetPosition(pos);
@@ -359,6 +362,11 @@ void CPlayer::Update(void)
 		m_pColPlayerSphere->SetPosition(pos);
 	}
 
+	if (m_pColPlayerBox != NULL)
+	{// 武器の当たり判定が存在していたとき
+		m_pColPlayerBox->SetPosition(pos);
+	}
+
 	//	D3DXVECTOR3 move = CManager::Slip(playerPos + m_move, vNormal);// 滑りベクトルを計算
 
 	//// 坂でのプレイヤー処理
@@ -521,6 +529,21 @@ void CPlayer::SetGoalState(bool bValue)
 }
 
 //=============================================================================
+// ポイント加算
+//=============================================================================
+void CPlayer::AddPoint(int nValue)
+{
+	m_nPoint += nValue;
+
+	CCounter *pCounter = m_pUi->GetCounter("time");
+
+	if (pCounter != NULL)
+	{
+		pCounter->SetNumber(m_nPoint);
+	}
+}
+
+//=============================================================================
 // 当たり判定(trigger)
 //=============================================================================
 void CPlayer::OnTriggerEnter(CCollider *col)
@@ -555,7 +578,19 @@ void CPlayer::OnTriggerEnter(CCollider *col)
 	}
 	if (sTag == "wood")
 	{
-		OutputDebugString("当たった");
+		col->Release();
+	}
+	else if (sTag == "Building")
+	{
+		col->Release();
+	}
+	else if (sTag == "Car")
+	{
+		col->Release();
+	}
+	else if (sTag == "House")
+	{
+		col->Release();
 	}
 	if (sTag == "goal")
 	{
@@ -579,8 +614,19 @@ void CPlayer::OnCollisionEnter(CCollider *col)
 
 	if (sTag == "wood")
 	{
-		m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		OutputDebugString("当たった");
+		col->Release();
+	}
+	else if(sTag == "Building")
+	{
+		col->Release();
+	}
+	else if (sTag == "Car")
+	{
+		col->Release();
+	}
+	else if (sTag == "House")
+	{
+		col->Release();
 	}
 }
 
