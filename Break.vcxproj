@@ -193,7 +193,6 @@
     <ClInclude Include="meshCapsule.h" />
     <ClInclude Include="meshCube.h" />
     <ClInclude Include="meshField.h" />
-    <ClInclude Include="meshOrbit.h" />
     <ClInclude Include="meshSphere.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="network.h" />
@@ -260,7 +259,6 @@
     <ClCompile Include="meshCapsule.cpp" />
     <ClCompile Include="meshCube.cpp" />
     <ClCompile Include="meshField.cpp" />
-    <ClCompile Include="meshOrbit.cpp" />
     <ClCompile Include="meshSphere.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="network.cpp" />

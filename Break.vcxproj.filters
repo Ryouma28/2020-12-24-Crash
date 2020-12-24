@@ -201,9 +201,6 @@
     <ClInclude Include="meshField.h">
       <Filter>mesh</Filter>
     </ClInclude>
-    <ClInclude Include="meshOrbit.h">
-      <Filter>mesh</Filter>
-    </ClInclude>
     <ClInclude Include="meshSphere.h">
       <Filter>mesh</Filter>
     </ClInclude>
@@ -387,9 +384,6 @@
       <Filter>mesh</Filter>
     </ClCompile>
     <ClCompile Include="meshField.cpp">
-      <Filter>mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="meshOrbit.cpp">
       <Filter>mesh</Filter>
     </ClCompile>
     <ClCompile Include="meshSphere.cpp">
