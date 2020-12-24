@@ -9,6 +9,11 @@
 #include "renderer.h"
 #include "number.h"
 
+// ==========================================================
+// 静的メンバー変数の初期化
+// ==========================================================
+int CCounter::m_nNum = 0;
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -151,17 +156,16 @@ void CCounter::BindTexture(std::string Add)
 //=============================================================================
 void CCounter::SetNumber(int nValue)
 {
-	int nNumber;
 	unsigned int nLength = CManager::LengthCalculation(nValue);
 
 	// 最大桁数までカウント
 	for (unsigned int nCount = 0; nCount < m_vNumber.size(); nCount++)
 	{
 		// 表示する数字計算
-		nNumber = nValue % (int)powf(10.0f, (float)m_vNumber.size() - nCount) / (int)powf(10.0f, m_vNumber.size() - 1.0f - nCount);
+		m_nNum = nValue % (int)powf(10.0f, (float)m_vNumber.size() - nCount) / (int)powf(10.0f, m_vNumber.size() - 1.0f - nCount);
 
 		// 数字設定
-		m_vNumber[nCount]->SetNumber(nNumber);
+		m_vNumber[nCount]->SetNumber(m_nNum);
 
 		if (m_bVariableNum)
 		{
