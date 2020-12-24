@@ -11,7 +11,7 @@
 // インクルード
 //=============================================================================
 #include "main.h"
-#include "character.h"
+#include "sceneX.h"
 #include "box.h"
 
 //=============================================================================
@@ -39,7 +39,7 @@ class CShadow;
 //=============================================================================
 // クラス定義
 //=============================================================================
-class CPlayer : public CCharacter
+class CPlayer : public CSceneX
 {
 public:
 	//モーションタイプ
@@ -89,8 +89,6 @@ public:
 	D3DXVECTOR3 GetCameraRot(void) { return m_cameraRot; }			// カメラの回転情報
 	CDistanceNext *GetDistanceNext(void) { return m_pDistanceNext; }// 次の目標との距離を取得
 	void SetCameraRot(D3DXVECTOR3 cameraRot) { m_cameraRot = cameraRot; }
-	void SetSpeed(int nCntSpeed);
-	void SetTurning(int nCntTurning);
 	int GetNumRound(void) { return m_nRound; }
 	bool GetEvent(void ) { return m_bEvent; }
 	bool GetGoalState(void) { return m_bGoal; }
@@ -105,11 +103,12 @@ private:
 	void Input(void);																// キー入力情報関数
 	void InputKeyboard(float fTireRotSpeed, D3DXVECTOR3 aVec);						// キーボード入力処理
 	void InputGemepad(float nValueH, float nValueV, float fTireRotSpeed, D3DXVECTOR3 aVec);// ゲームパッド入力処理
-	bool CollisionWall(void);														// 壁の当たり判定
-	bool CollisionWallWithRay(void);												// レイによる壁の当たり判定
-	void SlopeMove(void);															// 坂の処理
 
 	/*================= プレイヤー関連 =================*/
+	static LPD3DXMESH m_pMeshModel;
+	static LPD3DXBUFFER m_pBuffMatModel;
+	static DWORD m_nNumMatModel;
+
 	D3DXVECTOR3						m_dest;											// モデルの最終到達点
 	D3DXVECTOR3						m_difference;									// モデルの最大回転
 	D3DXVECTOR3						m_move;											// 移動量
