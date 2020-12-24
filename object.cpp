@@ -86,7 +86,7 @@ HRESULT CObject::Init(void)
 		if (m_pBox == NULL)
 		{
 			// スフィアの生成処理
-			m_pBox = CColliderBox::Create(true, D3DXVECTOR3(100.0f, 300.0f, 100.0f));
+			m_pBox = CColliderBox::Create(false, D3DXVECTOR3(100.0f, 300.0f, 100.0f));
 
 			// スフィアがあるとき
 			if (m_pBox != NULL)
@@ -94,7 +94,7 @@ HRESULT CObject::Init(void)
 				m_pBox->SetScene(this);
 				m_pBox->SetTag("wood");
 				m_pBox->SetPosition(pos);
-				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 150.0f, 0.0f));
+				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			}
 		}
 	}
@@ -116,10 +116,10 @@ void CObject::Uninit(void)
 //=============================================================================
 void CObject::Update(void)
 {
+	D3DXVECTOR3 pos = GetPosition();				// 位置の取得
+
 	if (m_Add == "data/model/GoalCircle35.x")
 	{
-		D3DXVECTOR3 pos = GetPosition();				// 位置の取得
-
 		if (m_pBox == NULL)
 		{
 			m_pBox = CColliderBox::Create(true, D3DXVECTOR3(400.0f, 800.0f, 1400.0f));
@@ -132,9 +132,14 @@ void CObject::Update(void)
 				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 500.0f, 0.0f));
 			}
 		}
-
-		SetPosition(pos);		// 位置の設定
 	}
+
+	if (m_pBox != NULL)
+	{
+		m_pBox->SetPosition(pos);
+	}
+
+	SetPosition(pos);		// 位置の設定
 
 #ifdef _DEBUG
 	Debug();				// デバッグ処理

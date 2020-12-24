@@ -148,17 +148,16 @@ void CScene::UpdateAll(void)
 			if (pSceneNow->GetActive())
 			{
 				pSceneNow->Update();															// アップデート
-
 			}
 			pSceneNow = pSceneNext;																// 次回アップデート対象を格納
 		}
 	}
 
-	// ヒエラルキー表示処理
-	ShowHierarchy();
-
 	// 当たり判定
 	CCollider::UpdateAll();
+
+	// ヒエラルキー表示処理
+	ShowHierarchy();
 
 	for (int nCount = 0; nCount < PRIORITY_MAX; nCount++)
 	{
@@ -367,6 +366,10 @@ void CScene::ResetFloor(void)
 //====================================================================
 void CScene::SetPosition(D3DXVECTOR3 pos)
 {
+	if (GetObjType() == PRIORITY_PLAYER)
+	{
+		printf("こんんちいは");
+	}
 	SetPosOld(m_pos);
 	m_pos = pos;
 }

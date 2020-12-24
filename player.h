@@ -100,7 +100,7 @@ private:
 
 	void MoveNearEnemy(void);														// 近くにいる敵に移動する処理
 	void Collision(void);															// 当たり判定処理
-	void Input(void);																// キー入力情報関数
+	void Input(D3DXVECTOR3 &pos);																// キー入力情報関数
 	void InputKeyboard(float fTireRotSpeed, D3DXVECTOR3 aVec);						// キーボード入力処理
 	void InputGemepad(float nValueH, float nValueV, float fTireRotSpeed, D3DXVECTOR3 aVec);// ゲームパッド入力処理
 
@@ -111,7 +111,6 @@ private:
 
 	D3DXVECTOR3						m_dest;											// モデルの最終到達点
 	D3DXVECTOR3						m_difference;									// モデルの最大回転
-	D3DXVECTOR3						m_pos;											// 位置
 	D3DXVECTOR3						m_move;											// 移動量
 	D3DXVECTOR3						m_size;											// 大きさ
 	D3DXVECTOR3						m_rot;											// 回転量
@@ -166,5 +165,6 @@ private:
 
 	/*===============当たり判定===============*/
 	CColliderSphere					*m_pColPlayerSphere;							// プレイヤーの当たり判定のポインタ
+	CColliderBox					*m_pColPlayerBox;							// プレイヤーの当たり判定のポインタ
 };
 #endif
