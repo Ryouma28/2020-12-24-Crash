@@ -116,7 +116,7 @@ void CTitle::Update(void)
 
 				pSound->PlaySoundA(SOUND_LABEL_SE_Decision);			// ダメージ音の再生
 
-				CFade::SetFade(CManager::MODE_CHARACTER_SELECT, CFade::FADETYPE_SLIDE);					//フェードを入れる
+				CFade::SetFade(CManager::MODE_GAME, CFade::FADETYPE_SLIDE);					//フェードを入れる
 			}
 		}
 		if (pInputController->GetJoypadUse(0))
@@ -129,7 +129,7 @@ void CTitle::Update(void)
 
 				pSound->PlaySoundA(SOUND_LABEL_SE_Decision);			// ダメージ音の再生
 
-				CFade::SetFade(CManager::MODE_CHARACTER_SELECT, CFade::FADETYPE_SLIDE);					//フェードを入れる
+				CFade::SetFade(CManager::MODE_GAME, CFade::FADETYPE_SLIDE);					//フェードを入れる
 			}
 		}
 	}

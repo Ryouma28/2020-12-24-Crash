@@ -83,9 +83,9 @@ private:
 	LPD3DXMESH		m_pMesh;							// メッシュ情報へのポインタ
 	DWORD			m_nNumMat;							// マテリアル情報の数
 	LPD3DXBUFFER		m_pBuffMat;						// マテリアル情報へのポインタ
-	CColliderBox *m_pBox;								// 当たり判定ボックス
 
 	static CColliderSphere *m_pSphere;					// 当たり判定スフィア
+	CColliderBox *m_pBox;						// 当たり判定
 	static unsigned int m_pointNum;						// ポイントの数
 	static std::vector<CObject*> m_vPointObj;
 

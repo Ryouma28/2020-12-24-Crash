@@ -35,7 +35,6 @@
 #include "distanceNext.h"
 #include "ui.h"
 #include "shadow.h"
-#include "characterSelect.h"
 
 //=============================================================================
 // ‘O•ûéŒ¾
@@ -175,7 +174,6 @@ HRESULT CPlayer::Init(void)
 
 	// ‰e‚Ì¶¬
 	m_pShadow = CShadow::Create();
-
 	return S_OK;
 }
 

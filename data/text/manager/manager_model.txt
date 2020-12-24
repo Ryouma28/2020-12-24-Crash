@@ -52,5 +52,8 @@ MODEL_FILENAME = data/model/MouMouCountry/Pillar.x			# [36]ä≈î¬
 MODEL_FILENAME = data/model/MouMouCountry/saku.x			# [37]çÚ
 MODEL_FILENAME = data/model/MouMouCountry/taru.x			# [38]íM
 MODEL_FILENAME = data/model/MouMouCountry/Tree.x			# [39]ñÿ
+MODEL_FILENAME = data/model/wood1.x			# [40]ñÿ
+MODEL_FILENAME = data/model/wood2.x			# [41]ñÿ
+MODEL_FILENAME = data/model/wood3.x			# [42]ñÿ
 
 END_SCRIPT		# Ç±ÇÃçsÇÕê‚ëŒè¡Ç≥Ç»Ç¢Ç±Ç∆ÅI
