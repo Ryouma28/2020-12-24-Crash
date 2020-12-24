@@ -16,6 +16,21 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{e63b2f87-43b4-4a2a-ab82-b8bde65d1bdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{0b9cd23b-a421-456c-87e0-674b3620c3d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mesh">
+      <UniqueIdentifier>{a5782db9-e841-4ecb-9365-3c5567bc4c3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mode">
+      <UniqueIdentifier>{119f76ba-cfea-4a11-8cd5-cd8152c4ad11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="collider">
+      <UniqueIdentifier>{5e7a6558-eea3-451e-98d2-10eab6126495}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="input">
+      <UniqueIdentifier>{11016288-4980-46e3-a5f0-c8d8fdaf0a0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -63,15 +78,6 @@
     <ClInclude Include="circle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="collider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="colliderBox.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="colliderSphere.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="counter.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -93,9 +99,6 @@
     <ClInclude Include="finishUi.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="GuideSign.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -103,18 +106,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="houseUi.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="inputController.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="inputKeyboard.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="inputMouse.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="life.h">
@@ -127,21 +118,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="manager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="meshCapsule.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="meshCube.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="meshField.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="meshOrbit.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="meshSphere.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="model.h">
@@ -174,28 +150,10 @@
     <ClInclude Include="puzzle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ranking.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="renderer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="result.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="scene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="scene2D.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="scene3D.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sceneX.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="shadow.h">
@@ -222,9 +180,6 @@
     <ClInclude Include="time.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="title.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="tree.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -236,6 +191,66 @@
     </ClInclude>
     <ClInclude Include="write.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scene2D.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scene3D.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneX.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="meshCapsule.h">
+      <Filter>mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="meshCube.h">
+      <Filter>mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="meshField.h">
+      <Filter>mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="meshOrbit.h">
+      <Filter>mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="meshSphere.h">
+      <Filter>mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>mode</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>mode</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>mode</Filter>
+    </ClInclude>
+    <ClInclude Include="collider.h">
+      <Filter>collider</Filter>
+    </ClInclude>
+    <ClInclude Include="colliderSphere.h">
+      <Filter>collider</Filter>
+    </ClInclude>
+    <ClInclude Include="colliderBox.h">
+      <Filter>collider</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="inputController.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="inputKeyboard.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="inputMouse.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking.h">
+      <Filter>mode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -278,15 +293,6 @@
     <ClCompile Include="circle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="collider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="colliderBox.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="colliderSphere.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="counter.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -308,22 +314,7 @@
     <ClCompile Include="finishUi.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="GuideSign.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="inputController.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="inputKeyboard.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="inputMouse.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="life.cpp">
@@ -336,21 +327,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="manager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="meshCapsule.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="meshCube.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="meshField.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="meshOrbit.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="meshSphere.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="model.cpp">
@@ -377,25 +353,7 @@
     <ClCompile Include="puzzle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ranking.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="renderer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="result.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="scene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="scene2D.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="scene3D.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sceneX.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="shadow.cpp">
@@ -422,9 +380,6 @@
     <ClCompile Include="time.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="title.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="tree.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -436,6 +391,66 @@
     </ClCompile>
     <ClCompile Include="write.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene2D.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene3D.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneX.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="meshCapsule.cpp">
+      <Filter>mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="meshCube.cpp">
+      <Filter>mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="meshField.cpp">
+      <Filter>mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="meshOrbit.cpp">
+      <Filter>mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="meshSphere.cpp">
+      <Filter>mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>mode</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>mode</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>mode</Filter>
+    </ClCompile>
+    <ClCompile Include="collider.cpp">
+      <Filter>collider</Filter>
+    </ClCompile>
+    <ClCompile Include="colliderBox.cpp">
+      <Filter>collider</Filter>
+    </ClCompile>
+    <ClCompile Include="colliderSphere.cpp">
+      <Filter>collider</Filter>
+    </ClCompile>
+    <ClCompile Include="inputController.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="inputKeyboard.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="inputMouse.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking.cpp">
+      <Filter>mode</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
