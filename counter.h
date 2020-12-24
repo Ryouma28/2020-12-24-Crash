@@ -48,7 +48,11 @@ public:
 
 	D3DXVECTOR3 GetSize(void) { return m_size; }
 
+	static int GetNum(void) { return m_nNum; }
+
 private:
+	static int m_nNum;
+
 	D3DXVECTOR3 m_size;				// サイズ
 	D3DXVECTOR3 m_distance;			// オフセット
 	D3DXVECTOR3 m_IntervalNum;		// 数字どうしの距離

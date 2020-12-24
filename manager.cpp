@@ -163,7 +163,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CGame::LoadAsset();
 	CResult::LoadAsset();
 
-	SetMode(MODE_TITLE);																		//モードセレクト
+	SetMode(MODE_GAME);																		//モードセレクト
 
 	CEffect::LoadParticleScript();
 

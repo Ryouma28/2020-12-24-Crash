@@ -14,5 +14,6 @@ UI_FILENAME = data/text/ui/SpeedMeter.txt				# [1]スピード単位
 UI_FILENAME = data/text/ui/TargetDistance.txt			# [2]次のターゲットまでの距離
 UI_FILENAME = data/text/ui/puzzleUI.txt					# [3]パズルUI
 UI_FILENAME = data/text/ui/score.txt					# [4]スコアUI
+UI_FILENAME = data/text/ui/ranking.txt					# [4]ランキングUI
 
 END_SCRIPT		# この行は絶対消さないこと！
