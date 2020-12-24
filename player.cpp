@@ -35,6 +35,7 @@
 #include "distanceNext.h"
 #include "ui.h"
 #include "shadow.h"
+#include "meshSphere.h"
 #include "counter.h"
 
 //=============================================================================
@@ -72,6 +73,7 @@ CPlayer::CPlayer(CScene::PRIORITY obj = CScene::PRIORITY_PLAYER) : CSceneX(obj)
 {
 	// 優先度の設定
 	SetObjType(CScene::PRIORITY_PLAYER);				// オブジェクトタイプ
+	SetSize(D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 
 	m_vecAxis = ZeroVector3;							// 回転軸の初期化
 	m_fValueRot = 0.0f;									// 回転角の初期化
@@ -84,6 +86,7 @@ CPlayer::CPlayer(CScene::PRIORITY obj = CScene::PRIORITY_PLAYER) : CSceneX(obj)
 	m_vectorOld = ZeroVector3;							// 前回のベクトル向き
 	m_cameraRot = D3DXVECTOR3(0, D3DX_PI, 0);			// カメラの回転情報初期化
 	m_pColPlayerSphere = NULL;							// プレイヤー当たり判定ポインタの初期化
+	m_pColPlayerBox = NULL;
 	m_pDistanceNext = NULL;								// 次のプレイヤーとの距離のUI
 	m_bHit = false;										// 当たり判定フラグの初期亜化
 	m_bJump = false;									// ジャンプフラグの初期化
@@ -97,6 +100,8 @@ CPlayer::CPlayer(CScene::PRIORITY obj = CScene::PRIORITY_PLAYER) : CSceneX(obj)
 	m_bAccel = false;									// アクセルを押しているかのフラグ
 	m_bColliderWithWall = true;							// 壁の当たり判定
 	m_bGoal = false;									// ゴールフラグ
+	m_nPoint = 0;
+	m_pUi = NULL;
 
 	m_pRank = NULL;
 
@@ -131,16 +136,16 @@ HRESULT CPlayer::Init(void)
 	CCamera *pCamera = CManager::GetCamera();
 	D3DXVECTOR3 pos = GetPosition();							// プレイヤーの位置取得
 
-	pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// プレイヤーの位置設定
+	pos = D3DXVECTOR3(0.0f, 350.0f, 0.0f);			// プレイヤーの位置設定
 
-	CUi *pUi = CUi::Create();
+	m_pUi = CUi::Create();
 
-	if (pUi != NULL)
+	if (m_pUi != NULL)
 	{
-		pUi->LoadScript("data/text/ui/score.txt");
-		pUi->SetPosition(D3DXVECTOR3(874.00, 51.00, 0.00));
+		m_pUi->LoadScript("data/text/ui/score.txt");
+		m_pUi->SetPosition(D3DXVECTOR3(874.00, 51.00, 0.00));
 
-		CCounter *pCounter = pUi->GetCounter("time");
+		CCounter *pCounter = m_pUi->GetCounter("time");
 
 		if (pCounter != NULL)
 		{
@@ -156,32 +161,32 @@ HRESULT CPlayer::Init(void)
 	CSceneX::Init();
 
 	// プレイヤーの当たり判定を生成
-	m_pColPlayerSphere = CColliderSphere::Create(false, 20.0f);
+	//m_pColPlayerSphere = CColliderSphere::Create(false, 500.0f);
 
 	if (m_pColPlayerSphere != NULL)
 	{ //球体のポインタがNULLではないとき
 		m_pColPlayerSphere->SetScene(this);
 		m_pColPlayerSphere->SetTag("player");										// タグ の設定
 		m_pColPlayerSphere->SetPosition(pos);										// 位置 の設定
-		m_pColPlayerSphere->SetOffset(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
+		m_pColPlayerSphere->SetOffset(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 
 	// プレイヤーの当たり判定を生成
-	//m_pColPlayerBox = CColliderBox::Create(false, D3DXVECTOR3(1.0f, 1.0f, 1.0f) * 50.0f);
+	m_pColPlayerBox = CColliderBox::Create(true, D3DXVECTOR3(500.0f, 500.0f, 500.0f));
 
-	//if (m_pColPlayerBox != NULL)
-	//{ //球体のポインタがNULLではないとき
-	//	m_pColPlayerBox->SetScene(this);
-	//	m_pColPlayerBox->SetTag("player");										// タグ の設定
-	//	m_pColPlayerBox->SetPosition(pos);										// 位置 の設定
-	//	m_pColPlayerBox->SetOffset(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
-	//}
+	if (m_pColPlayerBox != NULL)
+	{ //球体のポインタがNULLではないとき
+		m_pColPlayerBox->SetScene(this);
+		m_pColPlayerBox->SetTag("player");										// タグ の設定
+		m_pColPlayerBox->SetPosition(pos);										// 位置 の設定
+		m_pColPlayerBox->SetOffset(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
+	}
 
 	// 位置の設定
 	SetPosition(pos);
 
 	// 影の生成
-	m_pShadow = CShadow::Create();
+	//m_pShadow = CShadow::Create();
 	return S_OK;
 }
 
@@ -261,11 +266,28 @@ void CPlayer::Update(void)
 
 	if (pScene != NULL)
 	{// 今立っている床が存在したとき
+		m_size = GetSize();
 		CMeshField *pFloor = (CMeshField*)pScene;									// キャスト
 		fHeight = pFloor->GetHeight(pos);
+		fHeight += 350.0f;
+		pos.y = fHeight + (m_size.y * 5);
 
 		RANDTYPE Type = pFloor->GetRandType();
 
+		if (fabs(m_move.x) > 1.0f || fabs(m_move.y) > 1.0f || fabs(m_move.z) > 1.0f)
+		{
+			if (Type == RANDTYPE_GRASS)
+			{
+				if (m_size.x < 100000.0f)
+				{
+
+				}
+			}
+			else if (Type == RANDTYPE_SAND)
+			{
+				//	pSound->PlaySoundA((SOUND_LABEL)(CManager::GetRand(3) + (int)SOUND_LABEL_SE_SAND_1));
+			}
+		}
 		//if (animType == ANIMATIONTYPE_RUN)
 		//{
 		//	if (currentKey == 5 || currentKey == 0)
@@ -338,6 +360,11 @@ void CPlayer::Update(void)
 	if (m_pColPlayerSphere != NULL)
 	{// 武器の当たり判定が存在していたとき
 		m_pColPlayerSphere->SetPosition(pos);
+	}
+
+	if (m_pColPlayerBox != NULL)
+	{// 武器の当たり判定が存在していたとき
+		m_pColPlayerBox->SetPosition(pos);
 	}
 
 	//	D3DXVECTOR3 move = CManager::Slip(playerPos + m_move, vNormal);// 滑りベクトルを計算
@@ -472,7 +499,7 @@ HRESULT CPlayer::Load(void)
 	// テクスチャの読み込み
 	//D3DXCreateTextureFromFile(pDevice, PLAYER_TEX, &m_pTexture);
 	// Xファイルの読み込み
-	D3DXLoadMeshFromX("data/model/candy.x", D3DXMESH_SYSTEMMEM, pDevice, NULL, &m_pBuffMatModel, NULL, &m_nNumMatModel, &m_pMeshModel);
+	D3DXLoadMeshFromX("data/model/SnowBall.x", D3DXMESH_SYSTEMMEM, pDevice, NULL, &m_pBuffMatModel, NULL, &m_nNumMatModel, &m_pMeshModel);
 
 	return S_OK;
 }
@@ -499,6 +526,21 @@ void CPlayer::SetEvent(bool bValue)
 void CPlayer::SetGoalState(bool bValue)
 {
 	m_bGoal = bValue;
+}
+
+//=============================================================================
+// ポイント加算
+//=============================================================================
+void CPlayer::AddPoint(int nValue)
+{
+	m_nPoint += nValue;
+
+	CCounter *pCounter = m_pUi->GetCounter("time");
+
+	if (pCounter != NULL)
+	{
+		pCounter->SetNumber(m_nPoint);
+	}
 }
 
 //=============================================================================
@@ -536,7 +578,19 @@ void CPlayer::OnTriggerEnter(CCollider *col)
 	}
 	if (sTag == "wood")
 	{
-		OutputDebugString("当たった");
+		col->Release();
+	}
+	else if (sTag == "Building")
+	{
+		col->Release();
+	}
+	else if (sTag == "Car")
+	{
+		col->Release();
+	}
+	else if (sTag == "House")
+	{
+		col->Release();
 	}
 	if (sTag == "goal")
 	{
@@ -560,8 +614,19 @@ void CPlayer::OnCollisionEnter(CCollider *col)
 
 	if (sTag == "wood")
 	{
-		m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		OutputDebugString("当たった");
+		col->Release();
+	}
+	else if(sTag == "Building")
+	{
+		col->Release();
+	}
+	else if (sTag == "Car")
+	{
+		col->Release();
+	}
+	else if (sTag == "House")
+	{
+		col->Release();
 	}
 }
 
@@ -643,7 +708,7 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 	// カメラの取得
 	CCamera *pCamera = CManager::GetCamera();
 
-	//D3DXVECTOR3 rot = pCamera->GetRotation();
+	D3DXVECTOR3 rot = pCamera->GetRotation();
 	D3DXVECTOR3 Diff;	// 計算用格納変数
 	float nValueH = 0;									//コントローラー
 	float nValueV = 0;									//コントローラー
@@ -660,171 +725,40 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 			{// 使用可能だったとき
 				pGamepad->GetJoypadStickLeft(0, &nValueH, &nValueV);
 
-				//上下操作
-				if (pGamepad->GetControllerPress(0, JOYPADKEY_A))
+				float		fSpeed = 0.0f;			// プレイヤーの速度
+				float		fAngle = 0.0f;			// スティック角度の計算用変数
+				float fMomentX = sinf(m_dest.y);			//X角度
+				float fMomentZ = cosf(m_dest.y);			//Z角度
+
+				// 角度の計算して補正
+				fAngle = atan2f(nValueH, nValueV);
+				CTakaseiLibrary::RotRevision(&D3DXVECTOR3(0.0f, fAngle, 0.0f));
+
+				// スティックの倒れ具合でスピードを決定
+				if (abs(nValueH) > abs(nValueV))
+					fSpeed = (abs(nValueH));	// 横の倒れ具合
+				else
+					fSpeed = -(abs(nValueV));	// 縦の倒れ具合
+
+				// スティックの角度によってプレイヤー移動
+				m_move.x += sinf(fAngle + rot.y) * fSpeed;
+				m_move.z += cosf(fAngle + rot.y) * fSpeed;
+
+				//クォータニオン回転処理
+				m_vecAxis.x = fMomentX * cosf(D3DX_PI / 2.0f) - fMomentZ * sinf(D3DX_PI / 2.0f);
+				m_vecAxis.z = fMomentX * sinf(D3DX_PI / 2.0f) + fMomentZ * cosf(D3DX_PI / 2.0f);
+
+				// 目的の向きを決定
+				if (nValueH != 0 || nValueV != 0)
 				{
-					// 前輪モデルの最終目的座標
-					m_dest.y = 0.0f;
-
-					// 速度設定
-					m_fSpeed = -m_fPuzzleMaxSPeed;
-
-					// 動いていい
-					m_bMove = true;
-
-					// アクセルボタンを押した
-					m_bAccel = true;
-				}
-				else if (pGamepad->GetControllerPress(0, JOYPADKEY_B))
-				{
-					// 前輪モデルの最終目的座標
-					m_dest.y = 0.0f;
-
-					// 速度設定
-					m_fSpeed = m_fPuzzleMaxSPeed;
-
-					// 動いていい
-					m_bMove = true;
-				}
-
-				// アクセルボタンを離したとき
-				if (!pGamepad->GetControllerPress(0, JOYPADKEY_A))
-				{
-					// アクセルボタンを離した
-					m_bAccel = false;
+					m_dest.y = D3DX_PI + fAngle + rot.y;
 				}
 
-				// ドリフトボタンを押していないとき
-				if (!pGamepad->GetControllerPress(0, JOYPADKEY_RIGHT_TRIGGER))
-				{
-					// 左にスティックが倒れたとき
-					if (nValueH <= JOY_MAX_RANGE && nValueH > 0)
-					{
-						// 前輪モデルの最終目的座標
-						m_dest.y = -CManager::GetTurnVelocity();
-					}
-					else if (nValueH >= -JOY_MAX_RANGE && nValueH < 0)
-					{// 右にスティックが倒れたとき
-					 // 前輪モデルの最終目的座標
-						m_dest.y = CManager::GetTurnVelocity();
-					}
+				// 回転の補正
+				CTakaseiLibrary::RotRevision(&m_dest);
 
-					// ブレーキボタンが押されたとき
-					if (pGamepad->GetControllerPress(0, JOYPADKEY_B))
-					{
-						// 左にスティックが倒れたとき
-						if (nValueH <= JOY_MAX_RANGE && nValueH > 0)
-						{
-							// 前輪モデルの最終目的座標
-							m_dest.y = CManager::GetTurnVelocity();
-						}
-						else if (nValueH >= -JOY_MAX_RANGE && nValueH < 0)
-						{// 右にスティックが倒れたとき
-						 // 前輪モデルの最終目的座標
-							m_dest.y = -CManager::GetTurnVelocity();
-						}
-					}
-				}
-
-				// アクセル状態のとき
-				if (m_bAccel)
-				{
-					// ドリフトしていないとき
-					if (!m_bDrift[DRIFT_RIGHT] && !m_bDrift[DRIFT_LEFT])
-					{
-						// ドリフトボタンを押したとき
-						if (pGamepad->GetControllerPress(0, JOYPADKEY_RIGHT_TRIGGER))
-						{
-							// 左にスティックが倒れたとき
-							if (nValueH <= JOY_MAX_RANGE && nValueH > 0)
-							{
-								// ドリフトしている状態にする
-								m_bDrift[DRIFT_LEFT] = true;
-							}
-							else if (nValueH >= -JOY_MAX_RANGE && nValueH < 0)
-							{// 右にスティックが倒れたとき
-								// ドリフトしている状態にする
-								m_bDrift[DRIFT_RIGHT] = true;
-							}
-						}
-					}
-
-					// 右ドリフトしているとき
-					if (m_bDrift[DRIFT_RIGHT])
-					{
-						// 前輪モデルの最終目的地座標
-						m_dest.y = DRIFT_DEST;
-
-						// 左にスティックが倒れたとき
-						if (nValueH <= JOY_MAX_RANGE && nValueH > 0)
-						{
-							// 前輪モデルの最終目的地座標
-							m_dest.y = 0.0f;
-
-							// 加速度
-							m_fAcceleration -= ACCEKERATION_ADDITION;
-						}
-						else if (nValueH >= -JOY_MAX_RANGE && nValueH < 0)
-						{// 右にスティックが倒れたとき
-						 // 前輪モデルの最終目的地座標
-							m_dest.y = ROT_SPEED_DRIFT;
-
-							// 加速度
-							m_fAcceleration += ACCEKERATION_ADDITION;
-						}
-
-						// ドリフトボタンを離したとき
-						if (!pGamepad->GetControllerPress(0, JOYPADKEY_RIGHT_TRIGGER))
-						{
-							// ドリフト最大までカウント
-							for (int nCnt = 0; nCnt < DRIFT_MAX; nCnt++)
-							{
-								// ドリフトしていない状態にする
-								m_bDrift[nCnt] = false;
-
-								// 加速度初期化
-								m_fAcceleration = ACCEKERATION;
-							}
-						}
-					}
-					else if (m_bDrift[DRIFT_LEFT])
-					{// 左ドリフトのとき
-						// 前輪モデルの最終目的地座標
-						m_dest.y = -DRIFT_DEST;
-
-						// 左にスティックが倒れたとき
-						if (nValueH <= JOY_MAX_RANGE && nValueH > 0)
-						{
-							// 前輪モデルの最終目的地座標
-							m_dest.y = -ROT_SPEED_DRIFT;
-
-							// 加速度
-							m_fAcceleration += ACCEKERATION_ADDITION;
-						}
-						else if (nValueH >= -JOY_MAX_RANGE && nValueH < 0)
-						{// 右にスティックが倒れたとき
-							// 前輪モデルの最終目的地座標
-							m_dest.y = 0.0f;
-
-							// 加速度
-							m_fAcceleration -= ACCEKERATION_ADDITION;
-						}
-
-						// ドリフトボタンを離したとき
-						if (!pGamepad->GetControllerPress(0, JOYPADKEY_RIGHT_TRIGGER))
-						{
-							// ドリフト最大までカウント
-							for (int nCnt = 0; nCnt < DRIFT_MAX; nCnt++)
-							{
-								// ドリフトしていない状態にする
-								m_bDrift[nCnt] = false;
-
-								// 加速度初期化
-								m_fAcceleration = ACCEKERATION;
-							}
-						}
-					}
-				}
+				// 目的の回転の設定
+				SetRotation(m_dest);
 
 #ifdef _DEBUG
 				CDebugProc::Log("移動量 : %.2f %.2f %.2f", m_move.x, m_move.y, m_move.z);
@@ -1471,6 +1405,10 @@ void CPlayer::Debug(void)
 		ImGui::Text("rot = %.2f, %.2f, %.2f", m_rot.x, m_rot.y, m_rot.z);								// プレイヤーの回転を表示
 		ImGui::Text("move = %.2f, %.2f, %.2f", m_move.x, m_move.y, m_move.z);								// プレイヤーの現在位置を表示
 		ImGui::Text("HP = %d", m_nLife);				// プレイヤーの体力を表示
+
+		D3DXVECTOR3 size = GetSize();
+		ImGui::DragFloat3(u8"大きさ", (float*)size);
+		SetSize(size);
 
 		ImGui::Checkbox("ColliderWithWall", &m_bColliderWithWall);
 

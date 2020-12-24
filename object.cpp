@@ -21,6 +21,10 @@
 // マクロ定義
 //=============================================================================
 #define OBJECT_SCRIPT "data/text/manager/manager_model.txt"
+#define POINT_WOOD (10)
+#define POINT_BUILDING (100)
+#define POINT_CAR (50)
+#define POINT_HOUSE (500)
 
 //=============================================================================
 // 静的メンバ変数の初期化
@@ -86,7 +90,7 @@ HRESULT CObject::Init(void)
 		if (m_pBox == NULL)
 		{
 			// スフィアの生成処理
-			m_pBox = CColliderBox::Create(false, D3DXVECTOR3(100.0f, 300.0f, 100.0f));
+			m_pBox = CColliderBox::Create(true, D3DXVECTOR3(100.0f, 300.0f, 100.0f));
 
 			// スフィアがあるとき
 			if (m_pBox != NULL)
@@ -98,6 +102,125 @@ HRESULT CObject::Init(void)
 			}
 		}
 	}
+	// ポイントオブジェクトのとき
+	if (m_Add == "data/model/object/Building.x")
+	{
+		// スフィアがNULLのとき
+		if (m_pBox == NULL)
+		{
+			// スフィアの生成処理
+			m_pBox = CColliderBox::Create(false, D3DXVECTOR3(250.0f, 500.0f, 250.0f));
+
+			// スフィアがあるとき
+			if (m_pBox != NULL)
+			{
+				m_pBox->SetScene(this);
+				m_pBox->SetTag("Building");
+				m_pBox->SetPosition(pos);
+				m_pBox->SetOffset(D3DXVECTOR3(-25.0f, 250.0f, 0.0f));
+			}
+		}
+	}
+	// ポイントオブジェクトのとき
+	if (m_Add == "data/model/object/Car_Rad.x")
+	{
+		// スフィアがNULLのとき
+		if (m_pBox == NULL)
+		{
+			// スフィアの生成処理
+			m_pBox = CColliderBox::Create(false, D3DXVECTOR3(150.0f, 200.0f, 200.0f));
+
+			// スフィアがあるとき
+			if (m_pBox != NULL)
+			{
+				m_pBox->SetScene(this);
+				m_pBox->SetTag("Car");
+				m_pBox->SetPosition(pos);
+				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
+			}
+		}
+	}
+
+	// ポイントオブジェクトのとき
+	if (m_Add == "data/model/object/Car_Blue.x")
+	{
+		// スフィアがNULLのとき
+		if (m_pBox == NULL)
+		{
+			// スフィアの生成処理
+			m_pBox = CColliderBox::Create(false, D3DXVECTOR3(150.0f, 200.0f, 200.0f));
+
+			// スフィアがあるとき
+			if (m_pBox != NULL)
+			{
+				m_pBox->SetScene(this);
+				m_pBox->SetTag("Car");
+				m_pBox->SetPosition(pos);
+				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
+			}
+		}
+	}
+
+	// ポイントオブジェクトのとき
+	if (m_Add == "data/model/object/Car_Green.x")
+	{
+		// スフィアがNULLのとき
+		if (m_pBox == NULL)
+		{
+			// スフィアの生成処理
+			m_pBox = CColliderBox::Create(false, D3DXVECTOR3(150.0f, 200.0f, 200.0f));
+
+			// スフィアがあるとき
+			if (m_pBox != NULL)
+			{
+				m_pBox->SetScene(this);
+				m_pBox->SetTag("Car");
+				m_pBox->SetPosition(pos);
+				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
+			}
+		}
+	}
+
+	// ポイントオブジェクトのとき
+	if (m_Add == "data/model/object/House00.x")
+	{
+		// スフィアがNULLのとき
+		if (m_pBox == NULL)
+		{
+			// スフィアの生成処理
+			m_pBox = CColliderBox::Create(true, D3DXVECTOR3(350.0f, 350.0f, 550.0f));
+
+			// スフィアがあるとき
+			if (m_pBox != NULL)
+			{
+				m_pBox->SetScene(this);
+				m_pBox->SetTag("House");
+				m_pBox->SetPosition(pos);
+				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 50.0f, -100.0f));
+			}
+		}
+	}
+
+	// ポイントオブジェクトのとき
+	if (m_Add == "data/model/object/House01.x")
+	{
+		// スフィアがNULLのとき
+		if (m_pBox == NULL)
+		{
+			// スフィアの生成処理
+			m_pBox = CColliderBox::Create(true, D3DXVECTOR3(450.0f, 450.0f, 550.0f));
+
+			// スフィアがあるとき
+			if (m_pBox != NULL)
+			{
+				m_pBox->SetScene(this);
+				m_pBox->SetTag("House");
+				m_pBox->SetPosition(pos);
+				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
+			}
+		}
+	}
+
 	SetPosition(pos);			// 位置の設定
 	return S_OK;
 }
@@ -423,72 +546,49 @@ void CObject::OnTriggerEnter(CCollider *col)
 
 	if (sTag == "player")
 	{
-		if (m_pSphere == NULL) { return; }
+		CPlayer *pPlayer = CGame::GetPlayer();
 
-		if (m_pSphere->GetTag() == "checkpoint")
+		// ポイントオブジェクトのとき
+		if (m_Add == "data/model/wood3.x")
 		{
-			if (m_vPointObj.size() < m_pointNum) { return; }		// 配列のサイズを超えないようにする処理
-
-			m_pointNum++;		// フラグの配列を次にする
-
-			// 配列が最大を超えたら
-			if (m_pointNum >= m_vPointObj.size())
-			{
-				// 初期値に戻す
-				m_pointNum = 0;
-				CPlayer *pPlayer = CGame::GetPlayer();
-
-				if (pPlayer != NULL)
-				{
-					CDistanceNext *pDistanceNext = pPlayer->GetDistanceNext();
-					if (pDistanceNext != NULL)
-					{
-						if (pDistanceNext->GetNowRound() < MAX_ROUND - 1)
-						{
-							pDistanceNext->SetNowRound();
-						}
-						else
-						{
-							CNetwork *pNetwork = CManager::GetNetwork();
-							pNetwork->SendTCP("GOAL", sizeof("GOAL"));
-							pPlayer->SetEvent(true);
-							pPlayer->SetGoalState(true);
-							CFinishUi::Create();
-						}
-					}
-				}
-			}
-
-			m_pSphere->SetScene(m_vPointObj[m_pointNum]);			// 次のシーンを格納する
-
-			//// 半径の大きさを変える
-			//if (m_pointNum == 19 || m_pointNum == 20 || m_pointNum == 22 || m_pointNum == 23 ||
-			//	m_pointNum == 25 || m_pointNum == 26 || m_pointNum == 28 || m_pointNum == 29)
-			//{
-			//	m_pSphere->SetRadius(1250.0f);
-			//}
-			//else if (m_pointNum == 2 || m_pointNum == 18 || m_pointNum == 21 ||
-			//	m_pointNum == 24 || m_pointNum == 25)
-			//{
-			//	m_pSphere->SetRadius(1500.0f);
-			//}
-			//else if (m_pointNum == 25)
-			//{
-			//	m_pSphere->SetRadius(1700.0f);
-
-			//}
-			//else if (m_pointNum == 27)
-			//{
-			//	m_pSphere->SetRadius(1850.0f);
-			//}
-			//else
-			//{
-			//	m_pSphere->SetRadius(1000.0f);
-			//}
-
-			// ポイント番号設定
-			SetPointNum(m_pointNum);
+			pPlayer->AddPoint(POINT_WOOD);
 		}
+		// ポイントオブジェクトのとき
+		else if (m_Add == "data/model/object/Building.x")
+		{
+			pPlayer->AddPoint(POINT_BUILDING);
+		}
+		// ポイントオブジェクトのとき
+		else if (m_Add == "data/model/object/Car_Rad.x")
+		{
+			pPlayer->AddPoint(POINT_CAR);
+		}
+
+		// ポイントオブジェクトのとき
+		else if (m_Add == "data/model/object/Car_Blue.x")
+		{
+			pPlayer->AddPoint(POINT_CAR);
+		}
+
+		// ポイントオブジェクトのとき
+		else if (m_Add == "data/model/object/Car_Green.x")
+		{
+			pPlayer->AddPoint(POINT_CAR);
+		}
+
+		// ポイントオブジェクトのとき
+		else if (m_Add == "data/model/object/House00.x")
+		{
+			pPlayer->AddPoint(POINT_HOUSE);
+		}
+
+		// ポイントオブジェクトのとき
+		else if (m_Add == "data/model/object/House01.x")
+		{
+			pPlayer->AddPoint(POINT_HOUSE);
+		}
+
+		Release();
 	}
 }
 

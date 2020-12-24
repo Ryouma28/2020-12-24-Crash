@@ -49,6 +49,12 @@ public:
 	void SetRadius(float fValue);							// 半径を設定
 	float GetRadius(void) { return m_fRadius; }				// 半径を返す
 
+	void SetvecAxis(D3DXVECTOR3 axis) { m_vecAxis = axis; }			// 回転軸の設定
+	D3DXVECTOR3 GetvecAxis(void) { return m_vecAxis; }				// 回転軸の取得
+
+	void SetfValueRot(float fValueRot) { m_fValueRot = fValueRot; }	// 回転角の設定
+	float GetfValueRot(void) { return m_fValueRot; }				// 回転角の取得
+
 	void MakeVertex(void);									// 頂点情報を作成
 
 	void OnTriggerEnter(CCollider *col) {};
@@ -70,9 +76,6 @@ private:
 	float					m_fRadius;						// ポリゴン の半径
 	D3DXCOLOR				m_col;							// ポリゴン の色
 	D3DXMATRIX				m_mtxWorld;						// ワールドマトリックス
-	D3DXQUATERNION			m_quat;							// クォータニオン
-	D3DXVECTOR3				m_vecAxis;						// 回転軸
-	float					m_fValueRot;					// 回転角(回転量)
 
 	int						m_nNumVertexSphere;				// 総頂点数
 	int						m_nNumIndexSphere;				// インデックス数
@@ -84,5 +87,10 @@ private:
 	int m_nNumVertex;										// 総頂点数
 	int m_nNumIndex;										// インデックス数
 	int m_nNumPolygon;										// 総ポリゴン数
+
+	D3DXMATRIX m_mtxRot;	//回転マトリックス(保存用)
+	D3DXQUATERNION m_quat;	//クォータニオン
+	D3DXVECTOR3 m_vecAxis;	//回転軸
+	float m_fValueRot;		//回転角(回転量)
 };
 #endif

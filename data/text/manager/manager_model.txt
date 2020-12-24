@@ -55,5 +55,13 @@ MODEL_FILENAME = data/model/MouMouCountry/Tree.x			# [39]木
 MODEL_FILENAME = data/model/wood1.x			# [40]木
 MODEL_FILENAME = data/model/wood2.x			# [41]木
 MODEL_FILENAME = data/model/wood3.x			# [42]木
+MODEL_FILENAME = data/model/object/Building.x			# [43]ビル
+MODEL_FILENAME = data/model/object/Car_Blue.x			# [44]車(青)
+MODEL_FILENAME = data/model/object/Car_Green.x			# [45]車(緑)
+MODEL_FILENAME = data/model/object/Car_Rad.x			# [46]車(赤)
+MODEL_FILENAME = data/model/object/House00.x			# [47]家1
+MODEL_FILENAME = data/model/object/House01.x			# [48]家2
+MODEL_FILENAME = data/model/object/SnowBall.x			# [49]雪玉
+MODEL_FILENAME = data/model/object/Tower.x			# [50]スカイツリ
 
 END_SCRIPT		# この行は絶対消さないこと！
