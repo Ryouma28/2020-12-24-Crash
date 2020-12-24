@@ -75,6 +75,7 @@ public:
 	void SetDeathblow(float nValue);			// 必殺技ポイント数の設定
 	void SetEvent(bool bValue);					// イベントフラグの設定
 	void SetGoalState(bool bValue);				// ゴールフラグの設定
+	void AddPoint(int nValue);
 
 	void OnTriggerEnter(CCollider *col);
 	void OnCollisionEnter(CCollider *col);
@@ -93,6 +94,7 @@ public:
 	int GetNumRound(void) { return m_nRound; }
 	bool GetEvent(void ) { return m_bEvent; }
 	bool GetGoalState(void) { return m_bGoal; }
+	int GetPoint(void) { return m_nPoint; }
 
 private:
 #ifdef _DEBUG
@@ -154,6 +156,7 @@ private:
 
 	// レースゲーム関連
 	int								m_nRound;										// 現在の周回回数
+	int								m_nPoint;										// ポイント
 
 	/*=============== 3Dレンダリング関連 ===============*/
 	LPDIRECT3DVERTEXBUFFER9			m_pVtxBuff;										// 頂点バッファへのポインタ
@@ -168,5 +171,6 @@ private:
 	/*===============当たり判定===============*/
 	CColliderSphere					*m_pColPlayerSphere;							// プレイヤーの当たり判定のポインタ
 	CColliderBox					*m_pColPlayerBox;							// プレイヤーの当たり判定のポインタ
+	CUi								*m_pUi;
 };
 #endif
