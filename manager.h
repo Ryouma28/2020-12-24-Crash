@@ -69,10 +69,6 @@ public:
 	{
 		MODE_NONE = -1,
 		MODE_TITLE,							// タイトル
-		MODE_DEMO_PLAY,						// デモプレイ
-		MODE_CHARACTER_SELECT,				// キャラクター選択
-		MODE_STAGE_SELECT,					// ステージ選択
-		MODE_PUZZLE_CUSTOM,					// パズルカスタム
 		MODE_GAME,							// ゲーム
 		MODE_RESULT,						// リザルト
 		MODE_RANKING,						// ランキング
@@ -159,7 +155,6 @@ private:
 
 	static CGame *m_pGame;								// ゲームのポインタ
 	static CTitle *m_pTitle;							// タイトルのポインタ
-	static CPuzzle *m_pPuzzle;							// パズルのポインタ
 	static CResult *m_pResult;							// リザルトのポインタ
 	static CRanking *m_pRanking;						// ランキングのポインタ
 	static CCharacterSelect *m_pCharacterSelect;		// キャラ選択のポインタ

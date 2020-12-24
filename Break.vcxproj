@@ -159,7 +159,6 @@
     <ClInclude Include="box.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="character.h" />
-    <ClInclude Include="characterSelect.h" />
     <ClInclude Include="circle.h" />
     <ClInclude Include="collider.h" />
     <ClInclude Include="colliderBox.h" />
@@ -231,7 +230,6 @@
     <ClCompile Include="box.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="character.cpp" />
-    <ClCompile Include="characterSelect.cpp" />
     <ClCompile Include="circle.cpp" />
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="colliderBox.cpp" />

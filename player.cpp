@@ -36,7 +36,6 @@
 #include "distanceNext.h"
 #include "ui.h"
 #include "shadow.h"
-#include "characterSelect.h"
 
 //=============================================================================
 // マクロ定義
@@ -135,23 +134,6 @@ HRESULT CPlayer::Init(void)
 
 	// アニメーションの設定
 	AnimationSwitch(ANIMATIONTYPE_NONE);
-
-	// プレイヤーモデル情報の読み込み
-	switch (CCharacterSelect::GetCarType())
-	{
-	case 0:
-		LoadScript(SCRIPT_CAR01, ANIMATIONTYPE_MAX);
-		break;
-	case 1:
-		LoadScript(SCRIPT_CAR02, ANIMATIONTYPE_MAX);
-		break;
-	case 2:
-		LoadScript(SCRIPT_CAR03, ANIMATIONTYPE_MAX);
-		break;
-	case 3:
-		LoadScript(SCRIPT_CAR04, ANIMATIONTYPE_MAX);
-		break;
-	}
 
 	// プレイヤーの当たり判定を生成
 	m_pColPlayerSphere = CColliderSphere::Create(false, 50.0f);
