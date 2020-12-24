@@ -23,7 +23,8 @@ CMeshSphere::CMeshSphere(CScene::PRIORITY obj = CScene::PRIORITY_MESH) : CScene(
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);			// 色
 	m_vecAxis = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 回転軸
 	m_fRadius = 100.0;									// 半径
-	m_fValueRot = 0.0f;									// 回転角
+	m_vecAxis = ZeroVector3;		// 回転軸
+	m_fValueRot = 0.0f;				// 回転角(回転量)
 }
 
 //=============================================================================
@@ -130,13 +131,11 @@ void CMeshSphere::Draw(void)
 		// ワールドマトリックスの初期化
 		D3DXMatrixIdentity(&m_mtxWorld);
 
-		// クォータニオン
-		D3DXQuaternionRotationAxis(&m_quat, &m_vecAxis, D3DXToRadian(m_fValueRot));
-		D3DXMatrixRotationQuaternion(&mtxRot, &m_quat);
-
-		// 回転を反映
-		//D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+		//// クォータニオンを反映
+		//D3DXQuaternionRotationAxis(&m_quat, &m_vecAxis, m_fValueRot);
+		//D3DXMatrixRotationQuaternion(&mtxRot, &m_quat);
+		//D3DXMatrixMultiply(&m_mtxRot, &m_mtxRot, &mtxRot);
+		//D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &m_mtxRot);
 
 		// 位置を反映
 		D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);

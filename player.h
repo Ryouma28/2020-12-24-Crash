@@ -27,6 +27,7 @@
 class CMeshCapsule;
 class CMeshCube;
 class CMeshOrbit;
+class CMeshSphere;
 class CColliderSphere;
 class CColliderBox;
 class CScene2D;
@@ -162,6 +163,7 @@ private:
 	D3DXMATRIX						m_mtxWorld;										// ワールドマトリックス
 
 	CMeshOrbit						*m_pMeshOrbit;									// 軌跡のポインタ
+	CMeshSphere						*m_pMeshSphere;									// メッシュスフィア
 
 	/*===============当たり判定===============*/
 	CColliderSphere					*m_pColPlayerSphere;							// プレイヤーの当たり判定のポインタ

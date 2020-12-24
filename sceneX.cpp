@@ -277,9 +277,9 @@ void CSceneX::DrawSnow(void)
 	// ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
 
-	//// サイズを反映
-	//D3DXMatrixScaling(&mtxSize, m_size.x, m_size.y, m_size.z);
-	//D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxSize);
+	// サイズを反映
+	D3DXMatrixScaling(&mtxSize, m_size.x, m_size.y, m_size.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxSize);
 
 	// クォータニオンを反映
 	D3DXQuaternionRotationAxis(&m_quat, &m_vecAxis, m_fValueRot);
