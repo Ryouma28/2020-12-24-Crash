@@ -111,12 +111,16 @@ private:
 
 	D3DXVECTOR3						m_dest;											// モデルの最終到達点
 	D3DXVECTOR3						m_difference;									// モデルの最大回転
+	D3DXVECTOR3						m_pos;											// 位置
 	D3DXVECTOR3						m_move;											// 移動量
 	D3DXVECTOR3						m_size;											// 大きさ
 	D3DXVECTOR3						m_rot;											// 回転量
 	D3DXVECTOR3						m_cameraRot;									// カメラの回転情報
 	D3DXCOLOR						m_color;										// 色
 	D3DXVECTOR3						m_vectorOld;									// 前回の方向ベクトル
+	D3DXQUATERNION					m_quat;											// クォータニオン
+	D3DXVECTOR3						m_vecAxis;										// 回転軸
+	float							m_fValueRot;									// 回転角(回転量)
 	float							m_fSpeed;										// スピード
 	float							m_fPuzzleSpeed[Piece_Num];						// パズルのスピード
 	float							m_fPuzzleMaxSPeed;								// パズルのスピード
