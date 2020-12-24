@@ -159,7 +159,6 @@
     <ClInclude Include="box.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="character.h" />
-    <ClInclude Include="characterSelect.h" />
     <ClInclude Include="circle.h" />
     <ClInclude Include="collider.h" />
     <ClInclude Include="colliderBox.h" />
@@ -201,11 +200,8 @@
     <ClInclude Include="number.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="phase.h" />
-    <ClInclude Include="piece.h" />
-    <ClInclude Include="pieceSelect.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="purpose.h" />
-    <ClInclude Include="puzzle.h" />
     <ClInclude Include="ranking.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource.h" />
@@ -234,7 +230,6 @@
     <ClCompile Include="box.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="character.cpp" />
-    <ClCompile Include="characterSelect.cpp" />
     <ClCompile Include="circle.cpp" />
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="colliderBox.cpp" />
@@ -271,10 +266,7 @@
     <ClCompile Include="network.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="object.cpp" />
-    <ClCompile Include="piece.cpp" />
-    <ClCompile Include="pieceSelect.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="puzzle.cpp" />
     <ClCompile Include="ranking.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />

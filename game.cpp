@@ -33,7 +33,6 @@
 #include "wall.h"
 #include "speed.h"
 #include "GuideSign.h"
-#include "puzzle.h"
 #include "network.h"
 #include "startSignal.h"
 #include "shadow.h"
