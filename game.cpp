@@ -22,7 +22,6 @@
 #include "object.h"
 #include "circle.h"
 #include "stage.h"
-#include "meshOrbit.h"
 #include "effect.h"
 #include "tree.h"
 #include "number.h"
@@ -165,7 +164,6 @@ void CGame::LoadAsset(void)
 	CPlayer::Load();
 	CSky::Load();
 	CMeshField::Load();
-	CMeshOrbit::Load();
 	CEnemy::Load();
 	CObject::Load();
 	CMeshSphere::Load();
