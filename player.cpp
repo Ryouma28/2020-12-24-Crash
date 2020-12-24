@@ -61,10 +61,10 @@ DWORD CPlayer::m_nNumMatModel = NULL;
 #define CAMERA_ROT_SPEED 0.4f						// カメラの回転速度
 #define TIRE_ROT_SPEED 0.1f							// タイヤの回転速度
 #define ACCEKERATION 3.0f							// ドリフト加速度初期値
-#define ACCEKERATION_ADDITION 0.02f					// ドリフト加速度加算量
+#define ACCEKERATION_ADDITION 0.5f					// ドリフト加速度加算量
 #define DRIFT_DECREACE 0.6f							// ドリフト時速度減少
 #define DRIFT_DEST 0.25f							// ドリフト時タイヤの向き
-#define	INIT_ROT 1.38f
+#define	INIT_ROT 3.14f
 
 //=============================================================================
 // コンストラクタ
@@ -136,7 +136,7 @@ HRESULT CPlayer::Init(void)
 	CCamera *pCamera = CManager::GetCamera();
 	D3DXVECTOR3 pos = GetPosition();							// プレイヤーの位置取得
 
-	pos = D3DXVECTOR3(0.0f, 350.0f, 0.0f);			// プレイヤーの位置設定
+	pos = D3DXVECTOR3(0.0f, 350.0f, -500.0f);			// プレイヤーの位置設定
 
 	m_pUi = CUi::Create();
 
@@ -973,8 +973,8 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 		{// 方向キー左ボタンを押されたとき
 			if (pKeyboard->GetPressKeyboard(DIK_W))
 			{// 左上
-				m_move.x += sinf(D3DX_PI * -0.25f)*0.3f;
-				m_move.z += cosf(D3DX_PI * -0.25f)*0.3f;
+				m_move.x += sinf(D3DX_PI * -0.25f)*1.0f;
+				m_move.z += cosf(D3DX_PI * -0.25f)*1.0f;
 				//プレイヤー旋回
 				m_dest.y = (-D3DX_PI * -0.75f);
 				//クォータニオン回転処理
@@ -984,8 +984,8 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 			}
 			else if (pKeyboard->GetPressKeyboard(DIK_S))
 			{// 左下
-				m_move.x += sinf(D3DX_PI * -0.75f)*0.3f;
-				m_move.z += cosf(D3DX_PI * -0.75f)*0.3f;
+				m_move.x += sinf(D3DX_PI * -0.75f)*1.0f;
+				m_move.z += cosf(D3DX_PI * -0.75f)*1.0f;
 				//プレイヤー旋回
 				m_dest.y = (-D3DX_PI * -0.25f);
 				//クォータニオン回転処理
@@ -995,8 +995,8 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 			}
 			else
 			{// 左
-				m_move.x += sinf(D3DX_PI * -0.5f)*0.3f;
-				m_move.z += cosf(D3DX_PI * -0.5f)*0.3f;
+				m_move.x += sinf(D3DX_PI * -0.5f)*1.0f;
+				m_move.z += cosf(D3DX_PI * -0.5f)*1.0f;
 				//プレイヤー旋回
 				m_dest.y = (-D3DX_PI * -0.5f);
 				//クォータニオン回転処理
@@ -1009,8 +1009,8 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 		{// 方向キー右ボタンを押されたとき
 			if (pKeyboard->GetPressKeyboard(DIK_W))
 			{// 右上
-				m_move.x += sinf(D3DX_PI * 0.25f)*0.3f;
-				m_move.z += cosf(D3DX_PI * 0.25f)*0.3f;
+				m_move.x += sinf(D3DX_PI * 0.25f)*1.0f;
+				m_move.z += cosf(D3DX_PI * 0.25f)*1.0f;
 				//プレイヤー旋回
 				m_dest.y = (-D3DX_PI * 0.75f);
 				//クォータニオン回転処理
@@ -1020,8 +1020,8 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 			}
 			else if (pKeyboard->GetPressKeyboard(DIK_S))
 			{// 右下
-				m_move.x += sinf(D3DX_PI * 0.75f)*0.3f;
-				m_move.z += cosf(D3DX_PI * 0.75f)*0.3f;
+				m_move.x += sinf(D3DX_PI * 0.75f)*1.0f;
+				m_move.z += cosf(D3DX_PI * 0.75f)*1.0f;
 				//プレイヤー旋回
 				m_dest.y = (-D3DX_PI * 0.25f);
 				//クォータニオン回転処理
@@ -1031,8 +1031,8 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 			}
 			else
 			{// 右
-				m_move.x += sinf(D3DX_PI * 0.5f)*0.3f;
-				m_move.z += cosf(D3DX_PI * 0.5f)*0.3f;
+				m_move.x += sinf(D3DX_PI * 0.5f)*1.0f;
+				m_move.z += cosf(D3DX_PI * 0.5f)*1.0f;
 				//プレイヤー旋回
 				m_dest.y = (D3DX_PI * 0.5f);
 				//クォータニオン回転処理
@@ -1042,8 +1042,8 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 		}
 		else if (pKeyboard->GetPressKeyboard(DIK_W))
 		{// 上
-			m_move.x += sinf(D3DX_PI * 0.0f)*0.3f;
-			m_move.z += cosf(D3DX_PI * 0.0f)*0.3f;
+			m_move.x += sinf(D3DX_PI * 0.0f)*1.0f;
+			m_move.z += cosf(D3DX_PI * 0.0f)*1.0f;
 			//プレイヤー旋回
 			m_dest.y = (D3DX_PI * 1.0f);
 			//クォータニオン回転処理
@@ -1054,8 +1054,8 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 		else if (pKeyboard->GetPressKeyboard(DIK_S))
 		{// 下
 		 // 移動量(回転なし)
-			m_move.x += sinf(D3DX_PI * 1.0f)*0.3f;
-			m_move.z += cosf(D3DX_PI * 1.0f)*0.3f;
+			m_move.x += sinf(D3DX_PI * 1.0f)*1.0f;
+			m_move.z += cosf(D3DX_PI * 1.0f)*1.0f;
 
 			//プレイヤー旋回
 			m_dest.y = (D3DX_PI * 0.0f);

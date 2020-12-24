@@ -37,6 +37,7 @@
 #include "shadow.h"
 #include "finishUi.h"
 #include "counter.h"
+#include "camera.h"
 
 //=============================================================================
 // 静的メンバ変数
@@ -79,6 +80,14 @@ HRESULT CGame::Init(void)
 	// プレイヤーの生成
 	m_pPlayer = NULL;
 	m_pPlayer = CPlayer::Create();
+
+	CCamera* pCamera = CManager::GetCamera();
+
+	if (pCamera != NULL)
+	{
+		pCamera->SetDistance(2500);
+		pCamera->SetRotation(D3DXVECTOR3(0.46, 3.09f, 0.0f));
+	}
 
 	// 空の作成
 	m_pSky = CSky::Create();

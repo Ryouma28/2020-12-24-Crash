@@ -210,7 +210,7 @@ void CScene::DrawAll(void)
 					pSceneNow->Draw();																	//•`‰æ
 				}
 #endif
-				else if(pCamera->VFCulling(pSceneNow->GetPosition(), nCount, D3DXToRadian(45.0f), 1.0f, 2500.0f))
+				else if(pCamera->VFCulling(pSceneNow->GetPosition(), nCount, D3DXToRadian(45.0f), 1.0f, 5000.0f))
 				{
 					pSceneNow->Draw();																	//•`‰æ
 				}

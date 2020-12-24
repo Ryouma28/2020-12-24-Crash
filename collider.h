@@ -79,6 +79,7 @@ public:
 	bool GetUse(void) { return m_bUse; }				// 当たり判定の使用状態取得
 	bool GetMoving(void) { return m_bMoving; }			// 位置修正の可否取得
 	D3DXVECTOR3 GetOffset(void) { return m_offset; }	// 位置を取得
+	bool GetDie(void) { return m_bDie; }
 
 	static bool RayBlockCollision(D3DXVECTOR3 &pos, D3DXMATRIX *pMat, float fOffset, float fLength, VERTEX_PLANE &plane);//Rayの判定
 	static D3DXVECTOR3 RayLeftWallCollision(float &fLeftLength, D3DXVECTOR3 &pos, D3DXVECTOR3 &rot, D3DXVECTOR3 &move, D3DXMATRIX *pMat);//Rayの判定

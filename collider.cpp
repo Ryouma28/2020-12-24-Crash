@@ -240,48 +240,50 @@ void CCollider::UpdateAll(void)
 
 		pSceneNow2 = m_apTop[COLLISIONTYPE_BOX];
 
-		if (pSceneNow->GetUse())
-		{// 当たり判定の計算対象かどうか
+		if (!pSceneNow->GetDie())
+		{
+			if (pSceneNow->GetUse())
+			{// 当たり判定の計算対象かどうか
 
-			pSceneNow->Update();
+				pSceneNow->Update();
 
-			//次がなくなるまで繰り返す
-			while (pSceneNow2 != NULL)
-			{
-				pSceneNext2 = pSceneNow2->m_pNext[COLLISIONTYPE_BOX];		// 次回アップデート対象を控える
+				//次がなくなるまで繰り返す
+				while (pSceneNow2 != NULL)
+				{
+					pSceneNext2 = pSceneNow2->m_pNext[COLLISIONTYPE_BOX];		// 次回アップデート対象を控える
 
-				// 当たり判定の計算
-				if (pSceneNow2->GetUse())
-				{// 当たり判定の計算対象かどうか
-					if (pSceneNow != pSceneNow2)
-					{// 対象が同一じゃないかどうか
-						if (pSceneNow->GetTrigger() || pSceneNow2->GetTrigger())
-						{
-							if (BoxInCollider(pSceneNow, pSceneNow2))
+					// 当たり判定の計算
+					if (pSceneNow2->GetUse())
+					{// 当たり判定の計算対象かどうか
+						if (pSceneNow != pSceneNow2)
+						{// 対象が同一じゃないかどうか
+							if (pSceneNow->GetTrigger() || pSceneNow2->GetTrigger())
 							{
-								if (pSceneNow->m_pScene != NULL)
+								if (BoxInCollider(pSceneNow, pSceneNow2))
 								{
-									pSceneNow->m_pScene->OnTriggerEnter(pSceneNow2);
+									if (pSceneNow->m_pScene != NULL)
+									{
+										pSceneNow->m_pScene->OnTriggerEnter(pSceneNow2);
+									}
 								}
 							}
-						}
-						else
-						{
-							if (BoxHitCollider(pSceneNow, pSceneNow2))
+							else
 							{
-								if (pSceneNow->m_pScene != NULL)
+								if (BoxHitCollider(pSceneNow, pSceneNow2))
 								{
-									pSceneNow->m_pScene->OnCollisionEnter(pSceneNow2);
+									if (pSceneNow->m_pScene != NULL)
+									{
+										pSceneNow->m_pScene->OnCollisionEnter(pSceneNow2);
+									}
 								}
 							}
 						}
 					}
-				}
 
-				pSceneNow2 = pSceneNext2;			//次回アップデート対象を格納
+					pSceneNow2 = pSceneNext2;			//次回アップデート対象を格納
+				}
 			}
 		}
-
 		pSceneNow = pSceneNext;				//次回アップデート対象を格納
 	}
 
@@ -946,7 +948,7 @@ bool CCollider::CollisionHitSphereAndBox(CCollider * pFirstTarget, CCollider * p
 	CColliderBox *pBox = (CColliderBox*)pFirstTarget;
 	CColliderSphere *pSphere = (CColliderSphere*)pSecondTarget;														// 使える状態にキャスト
 
-	if(pBox->m_pScene == NULL || pSphere->m_pScene == NULL) { return false; }
+	if (pBox->m_pScene == NULL || pSphere->m_pScene == NULL) { return false; }
 
 	D3DXVECTOR3 boxPos = pBox->m_pScene->GetPosition() + pBox->GetOffset();							// Target1の位置
 	D3DXVECTOR3 spherePos = pSphere->m_pScene->GetPosition() + pSphere->GetOffset();						// Target2の位置
@@ -1306,7 +1308,7 @@ bool CCollider::RayBlockCollision(D3DXVECTOR3 &pos, D3DXMATRIX *pMat, float fOff
 		//	逆行列の取得
 		D3DXMatrixInverse(&invmat, NULL, &pObj->GetMtxWorld());
 		//	逆行列を使用し、レイ始点情報を変換　位置と向きで変換する関数が異なるので要注意
-		D3DXVec3TransformCoord(&m_posBefore, &D3DXVECTOR3(pos.x, pMat->_42+ fLength, pos.z), &invmat);
+		D3DXVec3TransformCoord(&m_posBefore, &D3DXVECTOR3(pos.x, pMat->_42 + fLength, pos.z), &invmat);
 		//	レイ終点情報を変換
 		D3DXVec3TransformCoord(&m_posAfter, &D3DXVECTOR3(pos.x, pos.y - 1, pos.z), &invmat);
 		//	レイ方向情報を変換
@@ -1380,7 +1382,7 @@ bool CCollider::RayBlockCollision(D3DXVECTOR3 &pos, D3DXMATRIX *pMat, float fOff
 		}
 		if (fData < 30000)//Rayの長さの指定条件
 		{
-			pos.y = pos.y - fData - fOffset+ fLength;
+			pos.y = pos.y - fData - fOffset + fLength;
 			plane = planeAns;
 		}
 	}
