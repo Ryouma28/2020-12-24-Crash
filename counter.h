@@ -44,6 +44,7 @@ public:
 
 	void SetDistance(D3DXVECTOR3 &distance);			// 差分の設定
 	void SetIntervalNum(D3DXVECTOR3 &interval);			// 数字どうしの距離
+	void SetVariable(bool bValue) { m_bVariableNum = bValue; }
 
 	D3DXVECTOR3 GetSize(void) { return m_size; }
 
@@ -52,6 +53,7 @@ private:
 	D3DXVECTOR3 m_distance;			// オフセット
 	D3DXVECTOR3 m_IntervalNum;		// 数字どうしの距離
 	unsigned int m_nLength;
+	bool m_bVariableNum;			// 桁数の可変
 
 	std::vector<CNumber*> m_vNumber;		// 動作タイプ
 };

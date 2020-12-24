@@ -228,6 +228,7 @@ bool CUi::LoadScript(const std::string &add)
 					D3DXVECTOR3 size = D3DXVECTOR3_ZERO;
 					D3DXVECTOR3 interval = D3DXVECTOR3_ZERO;
 					int nLength = 1;
+					bool bVariable = false;
 
 					while (strcmp(cHeadText, "END_COUNTERSET") != 0)
 					{
@@ -270,6 +271,10 @@ bool CUi::LoadScript(const std::string &add)
 								&interval.y,
 								&interval.z);
 						}
+						else if (strcmp(cHeadText, "VARIABLE") == 0)
+						{//位置
+							bVariable = true;
+						}
 					}
 
 					CCounter *pCounter = CCounter::Create(nLength);
@@ -282,6 +287,7 @@ bool CUi::LoadScript(const std::string &add)
 						pCounter->SetIntervalNum(interval);
 						pCounter->SetNumber(35);
 						pCounter->SetTransform();		// 頂点情報 の設定
+						pCounter->SetVariable(bVariable);
 
 						// マップに入れる
 						m_CntMap.insert(std::map<std::string, CCounter*>::value_type(Tag, pCounter));
