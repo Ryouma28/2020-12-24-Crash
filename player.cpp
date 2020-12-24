@@ -73,7 +73,6 @@ CPlayer::CPlayer(CScene::PRIORITY obj = CScene::PRIORITY_PLAYER) : CSceneX(obj)
 	// 優先度の設定
 	SetObjType(CScene::PRIORITY_PLAYER);				// オブジェクトタイプ
 
-	m_pos = ZeroVector3;								// 位置の初期化
 	m_vecAxis = ZeroVector3;							// 回転軸の初期化
 	m_fValueRot = 0.0f;									// 回転角の初期化
 	m_nLife = 100;										// 体力の初期化
@@ -157,7 +156,7 @@ HRESULT CPlayer::Init(void)
 	CSceneX::Init();
 
 	// プレイヤーの当たり判定を生成
-	m_pColPlayerSphere = CColliderSphere::Create(false, 50.0f);
+	m_pColPlayerSphere = CColliderSphere::Create(false, 20.0f);
 
 	if (m_pColPlayerSphere != NULL)
 	{ //球体のポインタがNULLではないとき
@@ -166,6 +165,17 @@ HRESULT CPlayer::Init(void)
 		m_pColPlayerSphere->SetPosition(pos);										// 位置 の設定
 		m_pColPlayerSphere->SetOffset(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
 	}
+
+	// プレイヤーの当たり判定を生成
+	//m_pColPlayerBox = CColliderBox::Create(false, D3DXVECTOR3(1.0f, 1.0f, 1.0f) * 50.0f);
+
+	//if (m_pColPlayerBox != NULL)
+	//{ //球体のポインタがNULLではないとき
+	//	m_pColPlayerBox->SetScene(this);
+	//	m_pColPlayerBox->SetTag("player");										// タグ の設定
+	//	m_pColPlayerBox->SetPosition(pos);										// 位置 の設定
+	//	m_pColPlayerBox->SetOffset(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
+	//}
 
 	// 位置の設定
 	SetPosition(pos);
@@ -206,6 +216,8 @@ void CPlayer::Update(void)
 	float fHeight = 0.0f;
 	//CModel *pModel = GetModel();
 
+	pos = GetPosition();				// 位置の取得
+
 	//// アニメーション情報の取得
 	//ANIMATIONTYPE animType = (ANIMATIONTYPE)GetAnimType();
 	//int currentKey = GetCurrentKey();
@@ -219,11 +231,9 @@ void CPlayer::Update(void)
 		if (pCamera->GetStalker())
 		{
 			// 入力処理
-			Input();
+			Input(pos);
 		}
 	}
-
-	pos = GetPosition();				// 位置の取得
 
 	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
 
@@ -524,9 +534,9 @@ void CPlayer::OnTriggerEnter(CCollider *col)
 			}
 		}
 	}
-	if (sTag == "house")
+	if (sTag == "wood")
 	{
-
+		OutputDebugString("当たった");
 	}
 	if (sTag == "goal")
 	{
@@ -547,6 +557,12 @@ void CPlayer::OnTriggerEnter(CCollider *col)
 void CPlayer::OnCollisionEnter(CCollider *col)
 {
 	std::string sTag = col->GetTag();
+
+	if (sTag == "wood")
+	{
+		m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		OutputDebugString("当たった");
+	}
 }
 
 //========================================================================================
@@ -616,7 +632,7 @@ void CPlayer::Collision(void)
 //=============================================================================
 // キー入力情報処理
 //=============================================================================
-void CPlayer::Input(void)
+void CPlayer::Input(D3DXVECTOR3 &pos)
 {
 	// キーボードの取得
 	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
@@ -634,7 +650,6 @@ void CPlayer::Input(void)
 
 	D3DXVECTOR3 cameraVec = D3DXVECTOR3(0, 0, 0);				// カメラの方向ベクトル
 	m_fSpeed = 0;
-	m_pos = GetPosition();		// 位置取得
 
 	// ====================== コントローラー ====================== //
 	if (!m_bEvent)
@@ -1002,13 +1017,12 @@ void CPlayer::Input(void)
 			m_rot.y -= D3DX_PI * 2;
 		}
 
-		m_pos += m_move;
+		pos += m_move;
 
 		m_move.x += (0 - m_move.x) * 0.1f;
 		m_move.z += (0 - m_move.z) * 0.1f;
 
 
-		SetPosition(m_pos);
 		SetRotation(m_rot);
 		SetvecAxis(D3DXVECTOR3(m_vecAxis.x, m_vecAxis.y, m_vecAxis.z));
 		SetfValueRot(m_fValueRot);
