@@ -143,8 +143,8 @@ void CGame::Update(void)
 		{// キーボードが存在していたとき
 			if (pKeyboard->GetTriggerKeyboard(DIK_RETURN))
 			{// 指定のキーが押されたとき
-				//CRanking::SetResultIndex(nScore);	// ランキングに今回の得点を送る
-				//CFade::SetFade(CManager::MODE_RANKING, CFade::FADETYPE_SLIDE);					//フェードを入れる
+				CRanking::SetResultIndex(m_pPlayer->GetPoint());	// ランキングに今回の得点を送る
+				CFade::SetFade(CManager::MODE_RANKING, CFade::FADETYPE_SLIDE);					//フェードを入れる
 			}
 		}
 	}
