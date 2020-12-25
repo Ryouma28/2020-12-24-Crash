@@ -151,7 +151,7 @@ HRESULT CPlayer::Init(void)
 
 		if (pCounter != NULL)
 		{
-			pCounter->SetNumber(2568);
+			pCounter->SetNumber(0);
 		}
 	}
 	if (pCamera != NULL)
