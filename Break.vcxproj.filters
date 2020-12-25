@@ -237,6 +237,9 @@
     <ClInclude Include="ranking.h">
       <Filter>mode</Filter>
     </ClInclude>
+    <ClInclude Include="endSignal.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -421,6 +424,9 @@
     </ClCompile>
     <ClCompile Include="ranking.cpp">
       <Filter>mode</Filter>
+    </ClCompile>
+    <ClCompile Include="endSignal.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

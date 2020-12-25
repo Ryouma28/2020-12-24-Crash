@@ -41,6 +41,7 @@
 #include "ranking.h"
 #include "inputKeyboard.h"
 #include "time.h"
+#include "endSignal.h"
 
 //=============================================================================
 // 静的メンバ変数
@@ -52,6 +53,7 @@ CEnemy		*CGame::m_pEnemy = NULL;			// 敵のポインタ
 CSky		*CGame::m_pSky = NULL;				// 空のポインタ
 CHouse		*CGame::m_pHouse = NULL;			// 家のポインタ
 CSpeed		*CGame::m_pSpeed = NULL;			// 時速のポインタ
+CEndSignal	*CGame::m_pEndSignal = NULL;
 
 CUi			*CGame::m_pUi = NULL;				// UIのポインタ
 CTime		*CGame::m_pTime = NULL;				// カウンタのポインタ
@@ -175,11 +177,10 @@ void CGame::Update(void)
 
 	if (bTime == false)
 	{
-		if (CFade::GetFade() == CFade::FADE_NONE)
-		{//フェードが処理をしていないとき
-			CFade::SetFade(CManager::MODE_RANKING, CFade::FADETYPE_SLIDE);					//フェードを入れる
+		if (m_pEndSignal == NULL)
+		{
+			m_pEndSignal = CEndSignal::Create();
 		}
-
 	}
 
 #ifdef _DEBUG
@@ -196,8 +197,7 @@ void CGame::Update(void)
 		{// キーボードが存在していたとき
 			if (pKeyboard->GetTriggerKeyboard(DIK_RETURN))
 			{// 指定のキーが押されたとき
-				CRanking::SetResultIndex(m_pPlayer->GetPoint());	// ランキングに今回の得点を送る
-				CFade::SetFade(CManager::MODE_RANKING, CFade::FADETYPE_SLIDE);					//フェードを入れる
+				m_pEndSignal = CEndSignal::Create();
 			}
 		}
 	}
