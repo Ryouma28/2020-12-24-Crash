@@ -364,8 +364,6 @@ void CPlayer::Update(void)
 	//	pos.y = fHeight;											// °‚Ì‚‚³‚ð‹‚ß‚é
 	//}
 
-	// ˆÊ’uÝ’è
-	SetPosition(pos);
 
 	if (m_bColliderWithWall)
 	{
@@ -478,6 +476,27 @@ void CPlayer::Update(void)
 	{
 		CEffect::SandSmoke(pos + D3DXVECTOR3(0.0f, 50.0f, 0.0f));
 	}
+
+
+	if (pos.x >= 12000)
+	{
+		pos.x = 12000;
+	}
+	else if (pos.x <= -12000)
+	{
+		pos.x = -12000;
+	}
+	if (pos.z >= 12000)
+	{
+		pos.z = 12000;
+	}
+	else if (pos.z <= -12000)
+	{
+		pos.z = -12000;
+	}
+	// ˆÊ’uÝ’è
+	SetPosition(pos);
+
 
 #ifdef _DEBUG
 	Debug();
