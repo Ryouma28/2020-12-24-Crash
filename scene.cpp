@@ -156,8 +156,8 @@ void CScene::UpdateAll(void)
 	// 当たり判定
 	CCollider::UpdateAll();
 
-	// ヒエラルキー表示処理
-	ShowHierarchy();
+	//// ヒエラルキー表示処理
+	//ShowHierarchy();
 
 	for (int nCount = 0; nCount < PRIORITY_MAX; nCount++)
 	{
