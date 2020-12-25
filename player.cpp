@@ -65,6 +65,7 @@ DWORD CPlayer::m_nNumMatModel = NULL;
 #define DRIFT_DECREACE 0.6f							// ドリフト時速度減少
 #define DRIFT_DEST 0.25f							// ドリフト時タイヤの向き
 #define	INIT_ROT 3.14f
+#define PLAYER_SPEED 5.0f							// プレイヤー速度
 
 //=============================================================================
 // コンストラクタ
@@ -255,9 +256,9 @@ void CPlayer::Update(void)
 	D3DXVec3Cross(&norwork, &BC, &AB);
 	D3DXVec3Normalize(&norwork, &norwork);
 
-	CDebugProc::Log("a地点 : %f, %f, %f\n", plane.a.x, plane.a.y, plane.a.z);
-	CDebugProc::Log("b地点 : %f, %f, %f\n", plane.b.x, plane.b.y, plane.b.z);
-	CDebugProc::Log("c地点 : %f, %f, %f\n", plane.c.x, plane.c.y, plane.c.z);
+	//CDebugProc::Log("a地点 : %f, %f, %f\n", plane.a.x, plane.a.y, plane.a.z);
+	//CDebugProc::Log("b地点 : %f, %f, %f\n", plane.b.x, plane.b.y, plane.b.z);
+	//CDebugProc::Log("c地点 : %f, %f, %f\n", plane.c.x, plane.c.y, plane.c.z);
 
 	//床の高さを取得する
 	CScene *pSceneNext = NULL;														// 初期化
@@ -325,9 +326,12 @@ void CPlayer::Update(void)
 	// ジャンプしていないとき
 	if (!m_bJump)
 	{
+		//// 減速
+		//m_move.x += (0 - m_move.x) * CManager::GetSpeedDampingRate();
+		//m_move.z += (0 - m_move.z) * CManager::GetSpeedDampingRate();
 		// 減速
-		m_move.x += (0 - m_move.x) * CManager::GetSpeedDampingRate();
-		m_move.z += (0 - m_move.z) * CManager::GetSpeedDampingRate();
+		m_move.x += (0 - m_move.x) * 0.001f;
+		m_move.z += (0 - m_move.z) * 0.001f;
 	}
 
 	////重力処理
@@ -468,7 +472,7 @@ void CPlayer::Update(void)
 		}
 	}
 
-	CDebugProc::Log("速度 : %.2f", CSpeed::GetSpeed());
+	//CDebugProc::Log("速度 : %.2f", CSpeed::GetSpeed());
 
 	if (CSpeed::GetSpeed() > 10)
 	{
@@ -749,13 +753,13 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 
 				// スティックの倒れ具合でスピードを決定
 				if (abs(nValueH) > abs(nValueV))
-					fSpeed = (abs(nValueH));	// 横の倒れ具合
+					fSpeed = (abs(nValueH)) * PLAYER_SPEED;	// 横の倒れ具合
 				else
-					fSpeed = -(abs(nValueV));	// 縦の倒れ具合
+					fSpeed = (abs(nValueV)) * PLAYER_SPEED;	// 縦の倒れ具合
 
 				// スティックの角度によってプレイヤー移動
 				m_move.x += sinf(fAngle + rot.y) * fSpeed;
-				m_move.z += cosf(fAngle + rot.y) * fSpeed;
+				m_move.z += -cosf(fAngle + rot.y) * fSpeed;
 
 				//クォータニオン回転処理
 				m_vecAxis.x = fMomentX * cosf(D3DX_PI / 2.0f) - fMomentZ * sinf(D3DX_PI / 2.0f);
@@ -949,7 +953,7 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 		}
 
 		//クォータニオン(回転量)
-		m_fValueRot = sqrtf(m_move.x * m_move.x + m_move.z * m_move.z) * 0.1f;
+		m_fValueRot = sqrtf(m_move.x * m_move.x + m_move.z * m_move.z) * 0.01f;
 
 		// -3.14より小さかったら
 		if (m_rot.y < -D3DX_PI)
