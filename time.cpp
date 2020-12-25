@@ -93,6 +93,8 @@ void CTime::Update(void)
 			break;
 		}
 	}
+
+	CDebugProc::Log("%d : %d\n", m_nMinutes, m_nSeconds);
 }
 
 //=============================================================================
