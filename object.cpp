@@ -695,8 +695,8 @@ void CObject::OnTriggerEnter(CCollider *col)
 			pPlayer->AddPoint(POINT_SNOWMAN);
 
 			D3DXVECTOR3 pos;
-			pos.x = CManager::GetRand(2500) - 1250.0f;
-			pos.z = CManager::GetRand(2500) - 1250.0f;
+			pos.x = CManager::GetRand(5000) - 2500.0f;
+			pos.z = CManager::GetRand(5000) - 2500.0f;
 
 			SetPosition(pos);
 
