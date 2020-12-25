@@ -19,6 +19,7 @@
 #include "effect.h"
 #include "sound.h"
 #include "fade.h"
+#include "fever.h"
 
 //=============================================================================
 // マクロ定義
@@ -28,6 +29,7 @@
 #define POINT_BUILDING (100)
 #define POINT_CAR (50)
 #define POINT_HOUSE (500)
+#define	POINT_SNOWMAN (1000)
 
 //=============================================================================
 // 静的メンバ変数の初期化
@@ -121,6 +123,29 @@ HRESULT CObject::Init(void)
 				m_pSphere->SetTag("Building");
 				m_pSphere->SetPosition(pos);
 				m_pSphere->SetOffset(D3DXVECTOR3(-25.0f, 250.0f, 0.0f));
+			}
+		}
+	}
+	// ポイントオブジェクトのとき
+	if (m_Add == "data/model/Snowman.x")
+	{
+		// スフィアがNULLのとき
+		if (m_pSphere == NULL)
+		{
+			// スフィアの生成処理
+			m_pSphere = CColliderSphere::Create(true, 100.0f);
+
+			// スフィアがあるとき
+			if (m_pSphere != NULL)
+			{
+				m_pSphere->SetScene(this);
+				m_pSphere->SetTag("Snowman");
+				pos;
+				pos.x = CManager::GetRand(2500) - 1250.0f;
+				pos.z = CManager::GetRand(2500) - 1250.0f;
+
+				m_pSphere->SetPosition(pos);
+				m_pSphere->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
 			}
 		}
 	}
@@ -270,7 +295,7 @@ void CObject::Update(void)
 #ifdef _DEBUG
 	Debug();				// デバッグ処理
 #endif
-	}
+}
 
 //=============================================================================
 // 描画処理
@@ -519,6 +544,14 @@ void CObject::LoadModelTest(char *add)
 			}
 		}
 		fclose(pFile);				// ファイルを閉じる
+
+		CObject *pObj = CObject::Create();										// 床の作成
+		if (pObj != NULL)
+		{
+			pObj->BindModel("data/model/Snowman.x");
+			pObj->Init();
+		}
+
 	}
 	else
 	{
@@ -561,59 +594,129 @@ void CObject::OnTriggerEnter(CCollider *col)
 		if (m_Add == "data/model/wood3.x" || m_Add == "data/model/wood2.x" || m_Add == "data/model/wood1.x")
 		{
 			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			pPlayer->AddPoint(POINT_WOOD);
+
+			if (pPlayer->GetFeverMode())
+			{
+				pPlayer->AddPoint(POINT_WOOD * 2);
+			}
+			else
+			{
+				pPlayer->AddPoint(POINT_WOOD);
+			}
 		}
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/Building.x")
 		{
 			CEffect::SandSmokeEffect(GetPosition());
 			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			pPlayer->AddPoint(POINT_BUILDING);
+
+			if (pPlayer->GetFeverMode())
+			{
+				pPlayer->AddPoint(POINT_BUILDING * 2);
+			}
+			else
+			{
+				pPlayer->AddPoint(POINT_BUILDING);
+			}
 		}
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/Car_Rad.x")
 		{
 			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			pPlayer->AddPoint(POINT_CAR);
+
+			if (pPlayer->GetFeverMode())
+			{
+				pPlayer->AddPoint(POINT_CAR * 2);
+			}
+			else
+			{
+				pPlayer->AddPoint(POINT_CAR);
+			}
 		}
 
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/Car_Blue.x")
 		{
 			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			pPlayer->AddPoint(POINT_CAR);
+			if (pPlayer->GetFeverMode())
+			{
+				pPlayer->AddPoint(POINT_CAR * 2);
+			}
+			else
+			{
+				pPlayer->AddPoint(POINT_CAR);
+			}
 		}
 
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/Car_Green.x")
 		{
 			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			pPlayer->AddPoint(POINT_CAR);
+			if (pPlayer->GetFeverMode())
+			{
+				pPlayer->AddPoint(POINT_CAR * 2);
+			}
+			else
+			{
+				pPlayer->AddPoint(POINT_CAR);
+			}
 		}
 
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/House00.x")
 		{
 			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			pPlayer->AddPoint(POINT_HOUSE);
+			if (pPlayer->GetFeverMode())
+			{
+				pPlayer->AddPoint(POINT_HOUSE * 2);
+			}
+			else
+			{
+				pPlayer->AddPoint(POINT_HOUSE);
+			}
 		}
 
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/House01.x")
 		{
 			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			pPlayer->AddPoint(POINT_HOUSE);
+			if (pPlayer->GetFeverMode())
+			{
+				pPlayer->AddPoint(POINT_HOUSE * 2);
+			}
+			else
+			{
+				pPlayer->AddPoint(POINT_HOUSE);
+			}
 		}
+		else if (m_Add == "data/model/Snowman.x")
+		{
+			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			pPlayer->AddPoint(POINT_SNOWMAN);
+
+			D3DXVECTOR3 pos;
+			pos.x = CManager::GetRand(2500) - 1250.0f;
+			pos.z = CManager::GetRand(2500) - 1250.0f;
+
+			SetPosition(pos);
+
+			if (!pPlayer->GetFeverMode())
+			{
+				CFever::Create();
+			}
+		}
+
+		SetActive(false);
 
 		if (m_pSphere != NULL)
 		{
-			m_pSphere->SetScene(NULL);
+			m_pSphere->SetActive(false);
 		}
 		if (m_pBox != NULL)
 		{
-			m_pBox->SetScene(NULL);
+			m_pSphere->SetActive(false);
 		}
-		Release();
+		//Release();
 	}
 }
 
@@ -736,6 +839,34 @@ HRESULT CObject::FindVerticesOnPoly(LPD3DXMESH pMesh, DWORD dwPolyIndex, D3DXVEC
 		VB->Release();
 	}
 	return S_OK;
+}
+
+//=============================================================================
+// 消されたオブジェクトの復活
+//=============================================================================
+void CObject::RecoveryActive(void)
+{
+	CScene *pSceneNext = NULL;														// 初期化
+	CScene *pSceneNow = CScene::GetScene(CScene::PRIORITY_MODEL);					// 先頭アドレスの取得
+
+	// 次がなくなるまで繰り返す
+	while (pSceneNow != NULL)
+	{
+		pSceneNext = CScene::GetSceneNext(pSceneNow, CScene::PRIORITY_MODEL);		//次回アップデート対象を控える
+		CObject *pObj = (CObject*)pSceneNow;								// クラスチェンジ(床)
+		pObj->SetActive(true);
+
+		if (pObj->m_pSphere != NULL)
+		{
+			pObj->m_pSphere->SetActive(true);
+		}
+		if (pObj->m_pBox != NULL)
+		{
+			pObj->m_pBox->SetActive(true);
+		}
+
+		pSceneNow = pSceneNext;								//次回アップデート対象を格納
+	}
 }
 
 #ifdef _DEBUG

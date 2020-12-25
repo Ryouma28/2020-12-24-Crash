@@ -31,6 +31,7 @@ CCollider::CCollider(COLLISIONTYPE Type)
 	m_pPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// ˆÊ’u‚Ìƒ|ƒCƒ“ƒ^
 	m_posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// ‘O‰ñˆÊ’u‚Ì‰Šú‰»
 	m_pMove = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// ˆÚ“®—Ê‚Ìƒ|ƒCƒ“ƒ^
+	m_bActive = true;
 
 	if (Type != COLLISIONTYPE_NONE)
 	{
@@ -194,7 +195,7 @@ void CCollider::UpdateAll(void)
 
 		pSceneNow->Update();
 
-		if (pSceneNow->GetUse())
+		if (pSceneNow->GetUse() && pSceneNow->GetActive())
 		{// “–‚½‚è”»’è‚ÌŒvŽZ‘ÎÛ‚©‚Ç‚¤‚©
 
 			//ŽŸ‚ª‚È‚­‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
@@ -266,7 +267,7 @@ void CCollider::UpdateAll(void)
 		{
 			pSceneNow->Update();
 
-			if (pSceneNow->GetUse())
+			if (pSceneNow->GetUse() && pSceneNow->GetActive())
 			{// “–‚½‚è”»’è‚ÌŒvŽZ‘ÎÛ‚©‚Ç‚¤‚©
 
 				//ŽŸ‚ª‚È‚­‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
@@ -335,7 +336,7 @@ void CCollider::UpdateAll(void)
 
 		pSceneNow2 = m_apTop[COLLISIONTYPE_SPHERE];
 
-		if (pSceneNow->GetUse())
+		if (pSceneNow->GetUse() && pSceneNow->GetActive())
 		{// “–‚½‚è”»’è‚ÌŒvŽZ‘ÎÛ‚©‚Ç‚¤‚©
 
 			pSceneNow->Update();
@@ -398,7 +399,7 @@ void CCollider::UpdateAll(void)
 
 		pSceneNow2 = m_apTop[COLLISIONTYPE_BOX];
 
-		if (pSceneNow->GetUse())
+		if (pSceneNow->GetUse() && pSceneNow->GetActive())
 		{// “–‚½‚è”»’è‚ÌŒvŽZ‘ÎÛ‚©‚Ç‚¤‚©
 
 			pSceneNow->Update();

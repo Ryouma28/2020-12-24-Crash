@@ -75,6 +75,7 @@ public:
 	void SetDeathblow(float nValue);			// 必殺技ポイント数の設定
 	void SetEvent(bool bValue);					// イベントフラグの設定
 	void SetGoalState(bool bValue);				// ゴールフラグの設定
+	void SetFeverMode(bool bValue);				// feverモード
 	void AddPoint(int nValue);
 
 	void OnTriggerEnter(CCollider *col);
@@ -95,6 +96,7 @@ public:
 	bool GetEvent(void ) { return m_bEvent; }
 	bool GetGoalState(void) { return m_bGoal; }
 	int GetPoint(void) { return m_nPoint; }
+	bool GetFeverMode(void) { return m_bFever; }
 
 private:
 #ifdef _DEBUG
@@ -151,6 +153,7 @@ private:
 	bool							m_bAccel;										// アクセルを押しているかどうか
 	bool							m_bRankingSign[Piece_Num];
 	bool							m_bRanking;
+	bool							m_bFever;
 	CNumber							*m_pRank;										// ランキング用UI
 	CDistanceNext					*m_pDistanceNext;								// 次のプレイヤーとの距離のUI
 	CShadow							*m_pShadow;										// 影の情報ポインタ

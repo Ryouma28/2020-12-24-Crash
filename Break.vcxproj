@@ -170,6 +170,7 @@
     <ClInclude Include="endSignal.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="fever.h" />
     <ClInclude Include="finishUi.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="GuideSign.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="endSignal.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="fever.cpp" />
     <ClCompile Include="finishUi.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="GuideSign.cpp" />

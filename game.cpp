@@ -42,6 +42,7 @@
 #include "inputKeyboard.h"
 #include "time.h"
 #include "endSignal.h"
+#include "fever.h"
 
 //=============================================================================
 // Ã“Iƒƒ“ƒo•Ï”
@@ -181,6 +182,12 @@ void CGame::Update(void)
 		{
 			m_pEndSignal = CEndSignal::Create();
 		}
+	}
+
+	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+	if (pKeyboard->GetTriggerKeyboard(DIK_F))
+	{
+		CFever::Create();
 	}
 
 #ifdef _DEBUG

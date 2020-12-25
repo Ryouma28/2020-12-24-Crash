@@ -104,6 +104,7 @@ CPlayer::CPlayer(CScene::PRIORITY obj = CScene::PRIORITY_PLAYER) : CSceneX(obj)
 	m_nPoint = 0;
 	m_pUi = NULL;
 	m_nCntSound = 0;
+	m_bFever = false;
 
 	m_pRank = NULL;
 
@@ -542,6 +543,14 @@ void CPlayer::SetEvent(bool bValue)
 void CPlayer::SetGoalState(bool bValue)
 {
 	m_bGoal = bValue;
+}
+
+//=============================================================================
+// feverÉÇÅ[Éhêÿë÷
+//=============================================================================
+void CPlayer::SetFeverMode(bool bValue)
+{
+	m_bFever = bValue;
 }
 
 //=============================================================================
