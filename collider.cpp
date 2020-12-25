@@ -11,6 +11,8 @@
 #include "object.h"
 #include "manager.h"
 #include "renderer.h"
+#include "player.h"
+#include "game.h"
 
 //==============================================================================
 // Ã“Iƒƒ“ƒo•Ï”
@@ -90,6 +92,26 @@ void CCollider::Update(void)
 	if (m_pScene != NULL)
 	{
 		m_pPos = m_pScene->GetPosition();
+
+		CPlayer *pPlayer = CGame::GetPlayer();
+
+		if (pPlayer != NULL)
+		{
+			if (CManager::GetDistance(pPlayer->GetPosition(), m_pPos) > 100000000)
+			{
+				if (m_bUse)
+				{
+					m_bUse = false;
+				}
+			}
+			else
+			{
+				if (!m_bUse)
+				{
+					m_bUse = true;
+				}
+			}
+		}
 	}
 }
 
@@ -170,10 +192,10 @@ void CCollider::UpdateAll(void)
 
 		pSceneNow2 = m_apTop[COLLISIONTYPE_SPHERE];
 
+		pSceneNow->Update();
+
 		if (pSceneNow->GetUse())
 		{// “–‚½‚è”»’è‚ÌŒvŽZ‘ÎÛ‚©‚Ç‚¤‚©
-
-			pSceneNow->Update();
 
 			//ŽŸ‚ª‚È‚­‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
 			while (pSceneNow2 != NULL)
@@ -242,10 +264,10 @@ void CCollider::UpdateAll(void)
 
 		if (!pSceneNow->GetDie())
 		{
+			pSceneNow->Update();
+
 			if (pSceneNow->GetUse())
 			{// “–‚½‚è”»’è‚ÌŒvŽZ‘ÎÛ‚©‚Ç‚¤‚©
-
-				pSceneNow->Update();
 
 				//ŽŸ‚ª‚È‚­‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
 				while (pSceneNow2 != NULL)
@@ -265,7 +287,11 @@ void CCollider::UpdateAll(void)
 									{
 										if (pSceneNow->m_pScene != NULL)
 										{
-											if (pSceneNow->m_pScene->GetObjType() != CScene::PRIORITY_BG)
+											if (pSceneNow->m_pScene->GetObjType() == CScene::PRIORITY_BG)
+											{
+												break;
+											}
+											else
 											{
 												pSceneNow->m_pScene->OnTriggerEnter(pSceneNow2);
 											}

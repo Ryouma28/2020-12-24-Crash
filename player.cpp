@@ -102,6 +102,7 @@ CPlayer::CPlayer(CScene::PRIORITY obj = CScene::PRIORITY_PLAYER) : CSceneX(obj)
 	m_bGoal = false;									// ゴールフラグ
 	m_nPoint = 0;
 	m_pUi = NULL;
+	m_nCntSound = 0;
 
 	m_pRank = NULL;
 
@@ -136,7 +137,7 @@ HRESULT CPlayer::Init(void)
 	CCamera *pCamera = CManager::GetCamera();
 	D3DXVECTOR3 pos = GetPosition();							// プレイヤーの位置取得
 
-	pos = D3DXVECTOR3(0.0f, 350.0f, -500.0f);			// プレイヤーの位置設定
+	pos = D3DXVECTOR3(7879.83f, 350.0f, -741.0f);			// プレイヤーの位置設定
 
 	m_pUi = CUi::Create();
 
@@ -161,7 +162,7 @@ HRESULT CPlayer::Init(void)
 	CSceneX::Init();
 
 	// プレイヤーの当たり判定を生成
-	//m_pColPlayerSphere = CColliderSphere::Create(false, 500.0f);
+	m_pColPlayerSphere = CColliderSphere::Create(false, 500.0f);
 
 	if (m_pColPlayerSphere != NULL)
 	{ //球体のポインタがNULLではないとき
@@ -276,6 +277,17 @@ void CPlayer::Update(void)
 
 		if (fabs(m_move.x) > 1.0f || fabs(m_move.y) > 1.0f || fabs(m_move.z) > 1.0f)
 		{
+			if (m_nCntSound > 50)
+			{
+				CSound *pSound = CManager::GetSound();				// サウンドの取得
+				pSound->PlaySoundA(SOUND_LABEL_SE_Roll);			// ダメージ音の再生
+				m_nCntSound = 0;
+			}
+			else
+			{
+				m_nCntSound++;
+			}
+
 			if (Type == RANDTYPE_GRASS)
 			{
 				if (m_size.x < 100000.0f)
@@ -552,6 +564,7 @@ void CPlayer::OnTriggerEnter(CCollider *col)
 	//CModel *pModel = GetModel();
 	std::vector<CObject*> pointObj = CObject::GetPointObj();
 
+	if(col->GetScene() == NULL) return;
 	if (col->GetScene()->GetObjType() == PRIORITY_ENEMY)
 	{
 		if (sTag == "weapon")
@@ -576,22 +589,22 @@ void CPlayer::OnTriggerEnter(CCollider *col)
 			}
 		}
 	}
-	if (sTag == "wood")
-	{
-		col->Release();
-	}
-	else if (sTag == "Building")
-	{
-		col->Release();
-	}
-	else if (sTag == "Car")
-	{
-		col->Release();
-	}
-	else if (sTag == "House")
-	{
-		col->Release();
-	}
+	//if (sTag == "wood")
+	//{
+	//	col->Release();
+	//}
+	//else if (sTag == "Building")
+	//{
+	//	col->Release();
+	//}
+	//else if (sTag == "Car")
+	//{
+	//	col->Release();
+	//}
+	//else if (sTag == "House")
+	//{
+	//	col->Release();
+	//}
 	if (sTag == "goal")
 	{
 		CNetwork *pNetwork = CManager::GetNetwork();
@@ -1007,6 +1020,13 @@ void CPlayer::Input(D3DXVECTOR3 &pos)
 		m_fDeathblow = 50.0f;				// 必殺技ポイントを最大値まで上げる
 	}
 
+	if (pKeyboard->GetTriggerKeyboard(DIK_5))
+	{
+		CEffect::SandSmoke(pos);
+		//CEffect::PetalCluster(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//CEffect::Star(pos);
+	}
+
 #endif
 }
 
@@ -1396,6 +1416,7 @@ void CPlayer::Debug(void)
 {
 	D3DXVECTOR3 pos = GetPosition();
 	D3DXVECTOR3 posOld = GetPosOld();
+
 	ImGui::Begin("System");													// 「System」ウィンドウに追加します。なければ作成します。
 
 	if (ImGui::CollapsingHeader("player"))

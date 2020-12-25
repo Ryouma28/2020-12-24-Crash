@@ -175,6 +175,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 //=============================================================================
 void CManager::Uninit(void)
 {
+	m_mode = MODE_END;
+
 	// テクスチャの開放
 	TexRelease();
 

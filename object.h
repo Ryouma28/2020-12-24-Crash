@@ -84,7 +84,7 @@ private:
 	DWORD			m_nNumMat;							// マテリアル情報の数
 	LPD3DXBUFFER		m_pBuffMat;						// マテリアル情報へのポインタ
 
-	static CColliderSphere *m_pSphere;					// 当たり判定スフィア
+	CColliderSphere *m_pSphere;					// 当たり判定スフィア
 	CColliderBox *m_pBox;						// 当たり判定
 	static unsigned int m_pointNum;						// ポイントの数
 	static std::vector<CObject*> m_vPointObj;

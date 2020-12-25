@@ -16,6 +16,9 @@
 #include "player.h"
 #include "distanceNext.h"
 #include "finishUi.h"
+#include "effect.h"
+#include "sound.h"
+#include "fade.h"
 
 //=============================================================================
 // マクロ定義
@@ -30,7 +33,6 @@
 // 静的メンバ変数の初期化
 //=============================================================================
 std::vector<CObject*> CObject::m_vPointObj = {};
-CColliderSphere *CObject::m_pSphere = NULL;
 unsigned int CObject::m_pointNum = 0;
 
 //=============================================================================
@@ -41,6 +43,7 @@ CObject::CObject(CScene::PRIORITY obj = CScene::PRIORITY_MODEL) : CSceneX(obj)
 	SetObjType(CScene::PRIORITY_MODEL);
 
 	m_pBox = NULL;
+	m_pSphere = NULL;
 }
 
 //=============================================================================
@@ -84,21 +87,21 @@ HRESULT CObject::Init(void)
 	}
 
 	// ポイントオブジェクトのとき
-	if (m_Add == "data/model/wood3.x")
+	if (m_Add == "data/model/wood3.x" || m_Add == "data/model/wood2.x" || m_Add == "data/model/wood1.x")
 	{
 		// スフィアがNULLのとき
-		if (m_pBox == NULL)
+		if (m_pSphere == NULL)
 		{
 			// スフィアの生成処理
-			m_pBox = CColliderBox::Create(true, D3DXVECTOR3(100.0f, 300.0f, 100.0f));
+			m_pSphere = CColliderSphere::Create(true, 100.0f);
 
 			// スフィアがあるとき
-			if (m_pBox != NULL)
+			if (m_pSphere != NULL)
 			{
-				m_pBox->SetScene(this);
-				m_pBox->SetTag("wood");
-				m_pBox->SetPosition(pos);
-				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+				m_pSphere->SetScene(this);
+				m_pSphere->SetTag("wood");
+				m_pSphere->SetPosition(pos);
+				m_pSphere->SetOffset(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			}
 		}
 	}
@@ -106,18 +109,18 @@ HRESULT CObject::Init(void)
 	if (m_Add == "data/model/object/Building.x")
 	{
 		// スフィアがNULLのとき
-		if (m_pBox == NULL)
+		if (m_pSphere == NULL)
 		{
 			// スフィアの生成処理
-			m_pBox = CColliderBox::Create(false, D3DXVECTOR3(250.0f, 500.0f, 250.0f));
+			m_pSphere = CColliderSphere::Create(true, 100.0f);
 
 			// スフィアがあるとき
-			if (m_pBox != NULL)
+			if (m_pSphere != NULL)
 			{
-				m_pBox->SetScene(this);
-				m_pBox->SetTag("Building");
-				m_pBox->SetPosition(pos);
-				m_pBox->SetOffset(D3DXVECTOR3(-25.0f, 250.0f, 0.0f));
+				m_pSphere->SetScene(this);
+				m_pSphere->SetTag("Building");
+				m_pSphere->SetPosition(pos);
+				m_pSphere->SetOffset(D3DXVECTOR3(-25.0f, 250.0f, 0.0f));
 			}
 		}
 	}
@@ -125,18 +128,18 @@ HRESULT CObject::Init(void)
 	if (m_Add == "data/model/object/Car_Rad.x")
 	{
 		// スフィアがNULLのとき
-		if (m_pBox == NULL)
+		if (m_pSphere == NULL)
 		{
 			// スフィアの生成処理
-			m_pBox = CColliderBox::Create(false, D3DXVECTOR3(150.0f, 200.0f, 200.0f));
+			m_pSphere = CColliderSphere::Create(true, 100.0f);
 
 			// スフィアがあるとき
-			if (m_pBox != NULL)
+			if (m_pSphere != NULL)
 			{
-				m_pBox->SetScene(this);
-				m_pBox->SetTag("Car");
-				m_pBox->SetPosition(pos);
-				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
+				m_pSphere->SetScene(this);
+				m_pSphere->SetTag("Car");
+				m_pSphere->SetPosition(pos);
+				m_pSphere->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
 			}
 		}
 	}
@@ -145,18 +148,18 @@ HRESULT CObject::Init(void)
 	if (m_Add == "data/model/object/Car_Blue.x")
 	{
 		// スフィアがNULLのとき
-		if (m_pBox == NULL)
+		if (m_pSphere == NULL)
 		{
 			// スフィアの生成処理
-			m_pBox = CColliderBox::Create(false, D3DXVECTOR3(150.0f, 200.0f, 200.0f));
+			m_pSphere = CColliderSphere::Create(true, 100.0f);
 
 			// スフィアがあるとき
-			if (m_pBox != NULL)
+			if (m_pSphere != NULL)
 			{
-				m_pBox->SetScene(this);
-				m_pBox->SetTag("Car");
-				m_pBox->SetPosition(pos);
-				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
+				m_pSphere->SetScene(this);
+				m_pSphere->SetTag("Car");
+				m_pSphere->SetPosition(pos);
+				m_pSphere->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
 			}
 		}
 	}
@@ -165,18 +168,18 @@ HRESULT CObject::Init(void)
 	if (m_Add == "data/model/object/Car_Green.x")
 	{
 		// スフィアがNULLのとき
-		if (m_pBox == NULL)
+		if (m_pSphere == NULL)
 		{
 			// スフィアの生成処理
-			m_pBox = CColliderBox::Create(false, D3DXVECTOR3(150.0f, 200.0f, 200.0f));
+			m_pSphere = CColliderSphere::Create(true, 100.0f);
 
 			// スフィアがあるとき
 			if (m_pBox != NULL)
 			{
-				m_pBox->SetScene(this);
-				m_pBox->SetTag("Car");
-				m_pBox->SetPosition(pos);
-				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
+				m_pSphere->SetScene(this);
+				m_pSphere->SetTag("Car");
+				m_pSphere->SetPosition(pos);
+				m_pSphere->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
 			}
 		}
 	}
@@ -185,18 +188,18 @@ HRESULT CObject::Init(void)
 	if (m_Add == "data/model/object/House00.x")
 	{
 		// スフィアがNULLのとき
-		if (m_pBox == NULL)
+		if (m_pSphere == NULL)
 		{
 			// スフィアの生成処理
-			m_pBox = CColliderBox::Create(true, D3DXVECTOR3(350.0f, 350.0f, 550.0f));
+			m_pSphere = CColliderSphere::Create(true, 100.0f);
 
 			// スフィアがあるとき
-			if (m_pBox != NULL)
+			if (m_pSphere != NULL)
 			{
-				m_pBox->SetScene(this);
-				m_pBox->SetTag("House");
-				m_pBox->SetPosition(pos);
-				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 50.0f, -100.0f));
+				m_pSphere->SetScene(this);
+				m_pSphere->SetTag("House");
+				m_pSphere->SetPosition(pos);
+				m_pSphere->SetOffset(D3DXVECTOR3(0.0f, 50.0f, -100.0f));
 			}
 		}
 	}
@@ -205,18 +208,18 @@ HRESULT CObject::Init(void)
 	if (m_Add == "data/model/object/House01.x")
 	{
 		// スフィアがNULLのとき
-		if (m_pBox == NULL)
+		if (m_pSphere == NULL)
 		{
 			// スフィアの生成処理
-			m_pBox = CColliderBox::Create(true, D3DXVECTOR3(450.0f, 450.0f, 550.0f));
+			m_pSphere = CColliderSphere::Create(true, 100.0f);
 
 			// スフィアがあるとき
-			if (m_pBox != NULL)
+			if (m_pSphere != NULL)
 			{
-				m_pBox->SetScene(this);
-				m_pBox->SetTag("House");
-				m_pBox->SetPosition(pos);
-				m_pBox->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
+				m_pSphere->SetScene(this);
+				m_pSphere->SetTag("House");
+				m_pSphere->SetPosition(pos);
+				m_pSphere->SetOffset(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
 			}
 		}
 	}
@@ -267,7 +270,7 @@ void CObject::Update(void)
 #ifdef _DEBUG
 	Debug();				// デバッグ処理
 #endif
-}
+	}
 
 //=============================================================================
 // 描画処理
@@ -544,6 +547,12 @@ void CObject::OnTriggerEnter(CCollider *col)
 {
 	std::string sTag = col->GetTag();
 
+	//CSound *pSound = CManager::GetSound();				// サウンドの取得
+	//if (pSound != NULL)
+	//{
+	//	pSound->PlaySoundA(SOUND_LABEL_SE_Decision);			// ダメージ音の再生
+	//}
+
 	if (sTag == "player")
 	{
 		CPlayer *pPlayer = CGame::GetPlayer();
@@ -551,43 +560,59 @@ void CObject::OnTriggerEnter(CCollider *col)
 		// ポイントオブジェクトのとき
 		if (m_Add == "data/model/wood3.x")
 		{
+			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			pPlayer->AddPoint(POINT_WOOD);
 		}
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/Building.x")
 		{
+			CEffect::SandSmokeEffect(GetPosition());
+			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			pPlayer->AddPoint(POINT_BUILDING);
 		}
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/Car_Rad.x")
 		{
+			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			pPlayer->AddPoint(POINT_CAR);
 		}
 
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/Car_Blue.x")
 		{
+			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			pPlayer->AddPoint(POINT_CAR);
 		}
 
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/Car_Green.x")
 		{
+			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			pPlayer->AddPoint(POINT_CAR);
 		}
 
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/House00.x")
 		{
+			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			pPlayer->AddPoint(POINT_HOUSE);
 		}
 
 		// ポイントオブジェクトのとき
 		else if (m_Add == "data/model/object/House01.x")
 		{
+			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			pPlayer->AddPoint(POINT_HOUSE);
 		}
 
+		if (m_pSphere != NULL)
+		{
+			m_pSphere->SetScene(NULL);
+		}
+		if (m_pBox != NULL)
+		{
+			m_pBox->SetScene(NULL);
+		}
 		Release();
 	}
 }

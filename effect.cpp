@@ -442,7 +442,7 @@ void CEffect::FallingPetals(bool bGravity, D3DXVECTOR3 pos, int nLife)
 
 	CEffect::SetEffect("data/tex/effect/rose_01.png",			// エフェクトタイプ
 		pos,													// 発生位置
-		D3DXVECTOR3(10.0f, 10.0f, 0.0f),						// サイズ
+		D3DXVECTOR3(50.0f, 50.0f, 0.0f),						// サイズ
 		particlePos * 5.0f,										// 移動方向
 		D3DXVECTOR3(0.0f, 0.0f, 0.0f),							// サイズの1フレーム当たりの加算値
 		D3DXVECTOR3(0.02f, 0.02f, 0.0f),						// 回転の変化量
@@ -660,10 +660,10 @@ void CEffect::SandSmokeEffect(D3DXVECTOR3 pos)
 			D3DXVECTOR3(mtx._41, mtx._42, mtx._43),				// 移動方向
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),						// サイズのフレーム当たりの加算値
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),						// 回転の変化量
-			D3DXCOLOR(0.0f, 0.0f, 0.0f, -0.02f),				// 色の変化量
+			D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f),				// 色の変化量
 			EASINGTYPE_NONE,									// イージングタイプ
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),						// テクスチャの回転
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f),					// カラー
+			D3DXCOLOR(0.2f, 0.2f, 0.2f, 0.5f),					// カラー
 			100,												// ライフ
 			false,												// 重力
 			0.025f,												// 抵抗
@@ -677,7 +677,7 @@ void CEffect::SandSmokeEffect(D3DXVECTOR3 pos)
 			D3DXVECTOR2(8.0f, 1.0f),							// 画像の分割数
 			false,												// 加算合成の有無
 			true,												// Zバッファの比較有無
-			false												// フェード
+			true												// フェード
 		);
 	}
 }
@@ -793,7 +793,7 @@ void CEffect::SandSmokeExplosion(D3DXVECTOR3 pos)
 
 		CEffect::SetEffect("data/tex/effect/explosion001.png",				// エフェクトタイプ
 			circlePos,											// 発生位置
-			D3DXVECTOR3(15.0f, 15.0f, 0.0f),					// サイズ
+			D3DXVECTOR3(350.0f, 350.0f, 0.0f),					// サイズ
 			D3DXVECTOR3(mtx._41, mtx._42, mtx._43),				// 移動方向
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),						// サイズのフレーム当たりの加算値
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),						// 回転の変化量
@@ -801,9 +801,9 @@ void CEffect::SandSmokeExplosion(D3DXVECTOR3 pos)
 			EASINGTYPE_IN,										// イージングタイプ
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),						// テクスチャの回転
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f),					// カラー
-			15,													// ライフ
+			100,													// ライフ
 			false,												// 重力
-			0.025f,												// 抵抗
+			0.0f,												// 抵抗
 			true,												// ビルボード
 			0,													// 表示する箇所(横)
 			0,													// 表示する箇所(縦)
@@ -964,7 +964,7 @@ void CEffect::Purification(D3DXVECTOR3 pos)
 //=============================================================================
 void CEffect::Star(D3DXVECTOR3 pos)
 {
-	CEffect::SetEffect("data/tex/effect/Star.png",							// エフェクトタイプ
+	CEffect::SetEffect("data/tex/star.png",							// エフェクトタイプ
 		pos,													// 発生位置
 		D3DXVECTOR3(50.0f, 50.0f, 0.0f),						// サイズ
 		D3DXVECTOR3(0.0f, 0.0f, 0.0f),							// 移動方向
@@ -976,7 +976,7 @@ void CEffect::Star(D3DXVECTOR3 pos)
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),						// カラー
 		15,														// ライフ
 		false,													// 重力
-		0.025f,													// 抵抗
+		0.0f,													// 抵抗
 		true,													// ビルボード
 		0,														// 表示する箇所(横)
 		0,														// 表示する箇所(縦)
@@ -1196,7 +1196,7 @@ void CEffect::Aura(int nCount, bool bJump, D3DXVECTOR3 pos)
 //=============================================================================
 void CEffect::PetalCluster(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 {
-	for (int nCount = 0; nCount < 150; nCount++)
+	for (int nCount = 0; nCount < 50; nCount++)
 	{
 		float fAngle = float(CManager::GetRand(314)) / 100.0f - float(CManager::GetRand(314)) / 100.0f;
 		float fRadius = float(CManager::GetRand(10 * 100)) / 100.0f - float(CManager::GetRand(10 * 100)) / 100.0f;
@@ -1240,9 +1240,9 @@ void CEffect::PetalCluster(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 		D3DXVECTOR3 petalRot;
 		petalRot = D3DXVECTOR3(sinf(fAngle) * 10, cosf(fAngle) * 10, 0.0f);
 
-		CEffect::SetEffect("data/tex/effect/rose_01.png",							// エフェクトタイプ
+		CEffect::SetEffect("data/tex/star.png",							// エフェクトタイプ
 			pos,	// 発生位置										// 発生位置
-			D3DXVECTOR3(10.0f, 10.0f, 0.0f),						// サイズ
+			D3DXVECTOR3(50.0f, 50.0f, 0.0f),						// サイズ
 			D3DXVECTOR3(mtx._41, mtx._42, mtx._43),					// 移動方向
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),							// サイズのフレーム当たりの加算値
 			D3DXVECTOR3(0.02f, 0.02f, 0.0f),						// 回転の変化量
@@ -1250,8 +1250,8 @@ void CEffect::PetalCluster(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 			EASINGTYPE_NONE,										// イージングタイプ
 			petalRot,												// テクスチャの回転
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),						// カラー
-			50,														// ライフ
-			false,													// 重力
+			150,														// ライフ
+			-0.25f,													// 重力
 			0,														// 抵抗
 			true,													// ビルボード
 			0,														// 表示する箇所(横)

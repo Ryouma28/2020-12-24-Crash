@@ -140,6 +140,7 @@ private:
 	int								m_nActionCount;									// 次のアクションまでのカウンタ
 	int								m_nParticleCount;								// パーティクル生成までのカウンタ
 	int								m_nPointNum;									// ポイント番号
+	int								m_nCntSound;
 	bool							m_bJump;										// ジャンプ
 	bool							m_bEvent;										// イベント発生フラグ
 	bool							m_bGoal;										// ゴールフラグ
