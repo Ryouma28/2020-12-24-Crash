@@ -174,7 +174,7 @@ HRESULT CObject::Init(void)
 			m_pSphere = CColliderSphere::Create(true, 100.0f);
 
 			// スフィアがあるとき
-			if (m_pBox != NULL)
+			if (m_pSphere != NULL)
 			{
 				m_pSphere->SetScene(this);
 				m_pSphere->SetTag("Car");
@@ -547,18 +547,18 @@ void CObject::OnTriggerEnter(CCollider *col)
 {
 	std::string sTag = col->GetTag();
 
-	//CSound *pSound = CManager::GetSound();				// サウンドの取得
-	//if (pSound != NULL)
-	//{
-	//	pSound->PlaySoundA(SOUND_LABEL_SE_Decision);			// ダメージ音の再生
-	//}
+	CSound *pSound = CManager::GetSound();				// サウンドの取得
+	if (pSound != NULL)
+	{
+		pSound->PlaySoundA(SOUND_LABEL_SE_Decision);			// ダメージ音の再生
+	}
 
 	if (sTag == "player")
 	{
 		CPlayer *pPlayer = CGame::GetPlayer();
 
 		// ポイントオブジェクトのとき
-		if (m_Add == "data/model/wood3.x")
+		if (m_Add == "data/model/wood3.x" || m_Add == "data/model/wood2.x" || m_Add == "data/model/wood1.x")
 		{
 			CEffect::PetalCluster(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			pPlayer->AddPoint(POINT_WOOD);
