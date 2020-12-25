@@ -94,7 +94,7 @@ void CTime::Update(void)
 		}
 	}
 
-	CDebugProc::Log("%d : %d\n", m_nMinutes, m_nSeconds);
+	//CDebugProc::Log("%d : %d\n", m_nMinutes, m_nSeconds);
 }
 
 //=============================================================================
