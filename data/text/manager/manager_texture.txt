@@ -13,8 +13,10 @@ MODEL_FILENAME = data/tex/star.png					# [0]星
 MODEL_FILENAME = data/tex/crossKey.png				# [1]十字キー
 MODEL_FILENAME = data/tex/B_Button.png				# [2]Bキー
 MODEL_FILENAME = data/tex/SCORE.png					# [3]すこあ
-MODEL_FILENAME = data/tex/rank01.png					# [3]ランキング
-MODEL_FILENAME = data/tex/Ranking01.png					# [5]ランキング
+MODEL_FILENAME = data/tex/rank01.png				# [3]ランキング
+MODEL_FILENAME = data/tex/Ranking01.png				# [5]ランキング
 MODEL_FILENAME = data/tex/Finish.png				# [6]ゴール
+MODEL_FILENAME = data/tex/fever.png					# [6]ゴール
+MODEL_FILENAME = data/tex/Gradation.png				# [6]ゴール
 
 END_SCRIPT		# この行は絶対消さないこと！
