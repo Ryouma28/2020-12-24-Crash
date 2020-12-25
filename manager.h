@@ -57,6 +57,7 @@ class CResult;
 class CRanking;
 class CSound;
 class CNetwork;
+class CTutorial;
 
 //=============================================================================
 // クラス定義
@@ -69,6 +70,7 @@ public:
 	{
 		MODE_NONE = -1,
 		MODE_TITLE,							// タイトル
+		MODE_TUTORIAL,						// チュートリアル
 		MODE_GAME,							// ゲーム
 		MODE_RESULT,						// リザルト
 		MODE_RANKING,						// ランキング
@@ -155,6 +157,7 @@ private:
 
 	static CGame *m_pGame;								// ゲームのポインタ
 	static CTitle *m_pTitle;							// タイトルのポインタ
+	static CTutorial *m_pTutorial;						// チュートリアル
 	static CResult *m_pResult;							// リザルトのポインタ
 	static CRanking *m_pRanking;						// ランキングのポインタ
 	static CCharacterSelect *m_pCharacterSelect;		// キャラ選択のポインタ

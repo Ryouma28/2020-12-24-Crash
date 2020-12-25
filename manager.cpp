@@ -23,6 +23,7 @@
 #include "network.h"
 #include "effect.h"
 #include "write.h"
+#include "tutorial.h"
 
 //=============================================================================
 // マクロ定義
@@ -44,6 +45,7 @@ CNetwork *CManager::m_pNetwork = NULL;												// ネットワーク ポインタを初期
 
 CGame *CManager::m_pGame = NULL;													// ゲーム ポインタを初期化
 CTitle *CManager::m_pTitle = NULL;													// タイトル ポインタを初期化
+CTutorial *CManager::m_pTutorial = NULL;											// チュートリアルポインタを初期化
 CResult *CManager::m_pResult = NULL;												// リザルト ポインタを初期化
 CRanking *CManager::m_pRanking = NULL;												// ランキング ポインタを初期化
 CCharacterSelect *CManager::m_pCharacterSelect = NULL;								// キャラクター選択 ポインタを初期化
@@ -240,6 +242,14 @@ void CManager::Uninit(void)
 		m_pTitle = NULL;																			// ポインタをNULLにする
 	}
 
+	// チュートリアルの開放処理
+	if (m_pTutorial != NULL)
+	{
+		m_pTutorial->Uninit();																		// チュートリアルの終了処理
+		delete m_pTutorial;																			// チュートリアルのメモリ解放
+		m_pTutorial = NULL;																			// チュートリアルのNULLにする
+	}
+
 	// ゲームの開放処理
 	if (m_pGame != NULL)
 	{
@@ -312,6 +322,12 @@ void CManager::Update(void)
 			m_pTitle->Update();
 		}
 		break;
+	case CManager::MODE_TUTORIAL:
+		if (m_pTutorial != NULL)
+		{
+			m_pTutorial->Update();
+		}
+		break;
 	case CManager::MODE_GAME:
 		if (m_pGame != NULL)
 		{
@@ -376,6 +392,14 @@ void CManager::SetMode(MODE mode)
 			m_pTitle = NULL;
 		}
 		break;
+	case MODE_TUTORIAL:
+		if (m_pTutorial != NULL)
+		{
+			m_pTutorial->Uninit();
+			delete m_pTutorial;
+			m_pTutorial = NULL;
+		}
+		break;
 	case MODE_GAME:
 		if (m_pGame != NULL)
 		{
@@ -410,6 +434,13 @@ void CManager::SetMode(MODE mode)
 	case MODE_TITLE:
 		m_pTitle = new CTitle;
 		m_pTitle->Init();
+		m_pSound->PlaySoundA(SOUND_LABEL_BGM_TiTle);
+
+		break;
+
+	case MODE_TUTORIAL:
+		m_pTutorial = new CTutorial;
+		m_pTutorial->Init();
 		m_pSound->PlaySoundA(SOUND_LABEL_BGM_TiTle);
 
 		break;
