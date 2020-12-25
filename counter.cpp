@@ -25,6 +25,7 @@ CCounter::CCounter(CScene::PRIORITY obj = CScene::PRIORITY_UI) : CScene(obj)
 	m_IntervalNum = D3DXVECTOR3_ZERO;
 	m_bVariableNum = false;
 	m_nLength = 0;
+	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 //=============================================================================
@@ -200,6 +201,22 @@ void CCounter::SetSize(D3DXVECTOR3 size)
 		{
 			m_vNumber[nCount]->SetSize(m_size);						// ‘å‚«‚³İ’è
 			m_vNumber[nCount]->SetTransform();
+		}
+	}
+}
+
+//=============================================================================
+// ƒJƒ‰[‚Ìİ’è
+//=============================================================================
+void CCounter::SetCol(D3DXCOLOR col)
+{
+	m_col = col;
+
+	for (unsigned int nCount = 0; nCount < m_vNumber.size(); nCount++)
+	{
+		if (m_vNumber[nCount] != NULL)
+		{
+			m_vNumber[nCount]->SetColor(col);						// ‘å‚«‚³İ’è
 		}
 	}
 }

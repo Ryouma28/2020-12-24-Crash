@@ -10,7 +10,7 @@ SCRIPT
 # UIÇÃèÓïÒ
 #==============================================================================
 UISET
-	TEXTURE_FILENAME = data/tex/SignBoard3.png
+	TEXTURE_FILENAME = data/tex/finish.png
 	POS = 0.00 0.00 0.00
 	ROT = 0.00 0.00 0.00
 	SIZE = 300.00 125.00 0.00

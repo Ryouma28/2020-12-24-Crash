@@ -44,6 +44,7 @@ private:
 	CNumber *m_apRank[MAX_RANK - 1];				// Top5
 	CUi *m_pUi;
 	int m_aScore[MAX_RANK];							// 全スコア
+	int m_nCount;
 	static int m_nResult;							// 今回の得点
 };
 #endif

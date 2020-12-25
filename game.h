@@ -26,6 +26,7 @@ class CHouse;
 class CHouseUi;
 class CSpeed;
 class CTime;
+class CEndSignal;
 
 //=============================================================================
 // クラス定義
@@ -57,6 +58,7 @@ private:
 	static CSky			*m_pSky;											// 空のポインタ
 	static CHouse		*m_pHouse;											// 家のポインタ
 	static CSpeed		*m_pSpeed;											// 時速のポインタ
+	static CEndSignal	*m_pEndSignal;
 
 	static CUi			*m_pUi;
 	static CTime		*m_pTime;

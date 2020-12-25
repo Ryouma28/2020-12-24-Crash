@@ -148,6 +148,8 @@ HRESULT CRanking::Init(void)
 	// ランキングを保存する
 	SaveRanking();
 
+	m_nCount = 0;
+
 	return S_OK;
 }
 
@@ -167,6 +169,43 @@ void CRanking::Update(void)
 {
 	CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
 	CInputController *pInputController = CManager::GetInputController();
+
+	if (m_nCount > 15)
+	{
+		for (int nCount = 0; nCount < 5; nCount++)
+		{
+			if (m_aScore[nCount] == m_nResult)
+			{
+				char aIndex[8];
+				memset(&aIndex, 0, sizeof(aIndex));
+
+				sprintf(aIndex, "%d", nCount + 1);
+
+				CCounter *pCounter;
+				pCounter = m_pUi->GetCounter(aIndex);
+
+				if (pCounter != NULL)
+				{
+					if (pCounter->GetActive())
+					{
+						pCounter->SetActive(false);
+						pCounter->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+					}
+					else
+					{
+						pCounter->SetActive(true);
+						pCounter->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+					}
+				}
+			}
+		}
+
+		m_nCount = 0;
+	}
+	else
+	{
+		m_nCount++;
+	}
 
 	if (CFade::GetFade() == CFade::FADE_NONE)
 	{//フェードが処理をしていないとき
