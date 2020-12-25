@@ -252,34 +252,39 @@ void CCollider::UpdateAll(void)
 				{
 					pSceneNext2 = pSceneNow2->m_pNext[COLLISIONTYPE_BOX];		// 次回アップデート対象を控える
 
-					// 当たり判定の計算
-					if (pSceneNow2->GetUse())
-					{// 当たり判定の計算対象かどうか
-						if (pSceneNow != pSceneNow2)
-						{// 対象が同一じゃないかどうか
-							if (pSceneNow->GetTrigger() || pSceneNow2->GetTrigger())
-							{
-								if (BoxInCollider(pSceneNow, pSceneNow2))
+					if (!pSceneNow2->GetDie())
+					{
+						// 当たり判定の計算
+						if (pSceneNow2->GetUse())
+						{// 当たり判定の計算対象かどうか
+							if (pSceneNow != pSceneNow2)
+							{// 対象が同一じゃないかどうか
+								if (pSceneNow->GetTrigger() || pSceneNow2->GetTrigger())
 								{
-									if (pSceneNow->m_pScene != NULL)
+									if (BoxInCollider(pSceneNow, pSceneNow2))
 									{
-										pSceneNow->m_pScene->OnTriggerEnter(pSceneNow2);
+										if (pSceneNow->m_pScene != NULL)
+										{
+											if (pSceneNow->m_pScene->GetObjType() != CScene::PRIORITY_BG)
+											{
+												pSceneNow->m_pScene->OnTriggerEnter(pSceneNow2);
+											}
+										}
 									}
 								}
-							}
-							else
-							{
-								if (BoxHitCollider(pSceneNow, pSceneNow2))
+								else
 								{
-									if (pSceneNow->m_pScene != NULL)
+									if (BoxHitCollider(pSceneNow, pSceneNow2))
 									{
-										pSceneNow->m_pScene->OnCollisionEnter(pSceneNow2);
+										if (pSceneNow->m_pScene != NULL)
+										{
+											pSceneNow->m_pScene->OnCollisionEnter(pSceneNow2);
+										}
 									}
 								}
 							}
 						}
 					}
-
 					pSceneNow2 = pSceneNext2;			//次回アップデート対象を格納
 				}
 			}
