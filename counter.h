@@ -41,6 +41,7 @@ public:
 	void BindTexture(std::string Add);
 	void SetNumber(int nValue);	// 数値の設定
 	void SetSize(D3DXVECTOR3 size);		// サイズの設定
+	void SetCol(D3DXCOLOR col);
 
 	void SetDistance(D3DXVECTOR3 &distance);			// 差分の設定
 	void SetIntervalNum(D3DXVECTOR3 &interval);			// 数字どうしの距離
@@ -54,6 +55,7 @@ private:
 	static int m_nNum;
 
 	D3DXVECTOR3 m_size;				// サイズ
+	D3DXCOLOR m_col;
 	D3DXVECTOR3 m_distance;			// オフセット
 	D3DXVECTOR3 m_IntervalNum;		// 数字どうしの距離
 	unsigned int m_nLength;

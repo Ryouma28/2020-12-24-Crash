@@ -40,6 +40,8 @@
 #include "camera.h"
 #include "ranking.h"
 #include "inputKeyboard.h"
+#include "time.h"
+#include "endSignal.h"
 
 //=============================================================================
 // 静的メンバ変数
@@ -51,9 +53,11 @@ CEnemy		*CGame::m_pEnemy = NULL;			// 敵のポインタ
 CSky		*CGame::m_pSky = NULL;				// 空のポインタ
 CHouse		*CGame::m_pHouse = NULL;			// 家のポインタ
 CSpeed		*CGame::m_pSpeed = NULL;			// 時速のポインタ
+CEndSignal	*CGame::m_pEndSignal = NULL;
 
 CUi			*CGame::m_pUi = NULL;				// UIのポインタ
 CTime		*CGame::m_pTime = NULL;				// カウンタのポインタ
+CUi			*CGame::m_pTimeUi = NULL;				// UIのポインタ
 
 //=============================================================================
 // コンストラクタ
@@ -79,6 +83,32 @@ HRESULT CGame::Init(void)
 	// エフェクトの生成
 	CEffect::Create();
 	m_bRate = false;
+
+	m_pTime = CTime::Create();
+	m_pTime->SetPosition(D3DXVECTOR3(500.0f, 100.0f, 0.0f));
+	m_pTime->SetSeconds(60);
+	m_pTime->SetUpdateTimer(true);
+
+	m_pTimeUi = CUi::Create();
+
+	if (m_pTimeUi != NULL)
+	{
+		m_pTimeUi->LoadScript("data/text/ui/time.txt");
+		CCounter *pCounter = m_pTimeUi->GetCounter("min");
+
+		if (pCounter != NULL)
+		{
+			pCounter->SetNumber(m_pTime->GetMinutes());
+		}
+
+		pCounter = m_pTimeUi->GetCounter("sec");
+
+		if (pCounter != NULL)
+		{
+			pCounter->SetNumber(m_pTime->GetSeconds());
+		}
+	}
+
 	// プレイヤーの生成
 	m_pPlayer = NULL;
 	m_pPlayer = CPlayer::Create();
@@ -129,6 +159,30 @@ void CGame::Update(void)
 	{
 		pNetwork->Create();
 	}
+
+	bool bTime = m_pTime->GetUpdateTimer();
+
+	if (m_pTimeUi != NULL)
+	{
+		CCounter *pCounter;
+
+		pCounter = m_pTimeUi->GetCounter("sec");
+
+		if (pCounter != NULL)
+		{
+			pCounter->SetNumber(m_pTime->GetSeconds());
+		}
+
+	}
+
+	if (bTime == false)
+	{
+		if (m_pEndSignal == NULL)
+		{
+			m_pEndSignal = CEndSignal::Create();
+		}
+	}
+
 #ifdef _DEBUG
 	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
 
@@ -143,8 +197,7 @@ void CGame::Update(void)
 		{// キーボードが存在していたとき
 			if (pKeyboard->GetTriggerKeyboard(DIK_RETURN))
 			{// 指定のキーが押されたとき
-				//CRanking::SetResultIndex(nScore);	// ランキングに今回の得点を送る
-				//CFade::SetFade(CManager::MODE_RANKING, CFade::FADETYPE_SLIDE);					//フェードを入れる
+				m_pEndSignal = CEndSignal::Create();
 			}
 		}
 	}

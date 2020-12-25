@@ -167,6 +167,7 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="distanceNext.h" />
     <ClInclude Include="effect.h" />
+    <ClInclude Include="endSignal.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="finishUi.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="distanceNext.cpp" />
     <ClCompile Include="effect.cpp" />
+    <ClCompile Include="endSignal.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="finishUi.cpp" />
