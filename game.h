@@ -63,7 +63,7 @@ private:
 	static CUi			*m_pUi;
 	static CTime		*m_pTime;
 	static CUi			*m_pTimeUi;
-
+	bool m_bTime;
 	bool m_bGuideSign[Piece_Num];
 	bool m_bRate;
 	bool m_bRoute;

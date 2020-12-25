@@ -84,7 +84,7 @@ HRESULT CGame::Init(void)
 	// エフェクトの生成
 	CEffect::Create();
 	m_bRate = false;
-
+	m_bTime = true;
 	m_pTime = CTime::Create();
 	m_pTime->SetPosition(D3DXVECTOR3(500.0f, 100.0f, 0.0f));
 	m_pTime->SetSeconds(60);
@@ -161,7 +161,7 @@ void CGame::Update(void)
 		pNetwork->Create();
 	}
 
-	bool bTime = m_pTime->GetUpdateTimer();
+	m_bTime = m_pTime->GetUpdateTimer();
 
 	if (m_pTimeUi != NULL)
 	{
@@ -176,7 +176,7 @@ void CGame::Update(void)
 
 	}
 
-	if (bTime == false)
+	if (m_bTime == false)
 	{
 		if (m_pEndSignal == NULL)
 		{
@@ -231,6 +231,11 @@ void CGame::Uninit(void)
 	{// ネットワークが存在していたとき
 		pNetwork->StopUpdate();				// 更新停止予約
 		pNetwork->CloseTCP();				// サーバーとの窓口を閉める
+	}
+
+	if (m_pEndSignal != NULL)
+	{
+		m_pEndSignal = NULL;
 	}
 
 	CObject::Unload();
